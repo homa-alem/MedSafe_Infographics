@@ -23,21 +23,22 @@ function draw_chart(labels, values){
     //svg lines drawn on graph for reference
     var line = chart.selectAll("line")
         .data(x.ticks(d3.max(values)));
-        //enter
-        line.enter().append("line")
-            .attr("x1", function(d) { return x(d) + margins.left; })
-            .attr("x2", function(d) { return x(d) + margins.left; })
-            .attr("y1", margins.top)
-            .attr("y2", height-margins.bottom);
-        //update section
+        //update selection
         line
+            .transition()
+            .duration(1000)
             .attr("x1", function(d) { return x(d) + margins.left; })
             .attr("x2", function(d) { return x(d) + margins.left; })
             .attr("y1", margins.top)
             .attr("y2", height-margins.bottom);
         //enter section
-        
-
+        line.enter().append("line")
+            .transition()
+            .duration(1000)
+            .attr("x1", function(d) { return x(d) + margins.left; })
+            .attr("x2", function(d) { return x(d) + margins.left; })
+            .attr("y1", margins.top)
+            .attr("y2", height-margins.bottom);
         //exit section
         line.exit().remove();
 
@@ -74,11 +75,13 @@ function draw_chart(labels, values){
         //enter
     rect.enter().append("rect")
         .attr("x", margins.left)
-        .attr("y", y)
+        .attr("y", height-margins.bottom)
         .attr("width", x)
         .attr("height", y.rangeBand());
         //update
-    rect
+    rect.transition()
+        .duration(1000)
+        .ease('bounce')
         .attr("x", margins.left)
         .attr("y", y)
         .attr("width", x)
@@ -114,7 +117,7 @@ function draw_chart(labels, values){
 
     var label = chart.selectAll(".label")
           .data(labels);
-
+    //enter selection
     label.enter().append("text")
         .attr('class', 'label')
         .attr("x", 100)
@@ -123,7 +126,7 @@ function draw_chart(labels, values){
         .attr("dy", ".36em")
         .attr("text-anchor", "end")
         .text(String);
-
+    //update selection
     label
           .attr("x", 100)
           .attr("y", function(d){ return ylabel(d)+ ylabel.rangeBand()/2} )
@@ -131,11 +134,12 @@ function draw_chart(labels, values){
           .attr("dy", ".36em")
           .attr("text-anchor", "end")
           .text(String);
-
-          label.exit().remove();
+    //exit selection
+    label.exit().remove();
 }
-draw_chart(['John', 'Tim', 'Sam', 'Greg', 'Charles', 'jit'], [8, 4, 9, 12, 13, 13]);
+draw_chart(['John', 'Tim', 'Sam', 'Greg', 'Charles', 'Gopal'], [8, 4, 9, 12, 13, 14]);
 d3.select("#transition")
     .on("click", function() {
-        draw_chart(['John', 'Tim', 'Sam'], [8, 4, 9]);
+        draw_chart(['John', 'Tim', 'Sam', 'Greg', 'Charles', 'Gopal', 'Rajan', 'Kevin', 'Ganguly'], [8, 4, 9, 12, 11, 23, 21, 5, 32]);
+
     });
