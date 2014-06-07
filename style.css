@@ -6,10 +6,10 @@
   stroke: none;
   fill: steelblue;
 }
-.chart text.label {
+.chart .label {
   fill: #000;
 }
-.chart text.score{
+.chart .score{
   fill: white;
 }
 .chart line {
@@ -18,6 +18,6 @@
 .chart rect:hover {
   fill: #64707D;
 } 
-.chart .rule {
+.rule {
   fill: #000;
 } 
