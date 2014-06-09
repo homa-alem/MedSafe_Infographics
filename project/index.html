@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>D3 Data Visualizations</title>
+
+    <!-- Bootstrap -->
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="static/css/graph-style.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  </head>
+  <body>
+  <!-- Header -->
+    <div class="container" id="mainContainer">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+        <h3 class="text-muted">D3 Based Data Visualizations</h3>
+      </div>
+    <div>
+    </div="container">
+      <div class="row">
+        <div class="col-md-12" id="headingDiv">
+          <h5> Graph Showing the Top K Medical Specialities Related to Device Failure (%)</h5>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-md-12" id="waitDiv">
+          <p><img src="static/ajax-loader.gif"> Crunching Numbers...Fetching Data...</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-9" id="svgContainer"></div>
+        <div class="col-md-3" id="sideDiv">
+          <h3> Select k </h3>
+          <div class="row">
+           <select class="form-control" id="kSelector">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12" selected="selected">12</option>
+            </select>
+          </div>
+        </div>
+    </div>
+  </div>
+    <script type="text/javascript" src="static/js/graph-drawer.js"></script>
+    <script type="text/javascript" src="static/js/data-ajax.js"></script>
+
+  </body>
+</html>
