@@ -3,7 +3,7 @@ var pJson;
 function ajax_caller(){
     $.ajax({
     // the URL for the request
-    url: "http://localhost:8888/visualization/backend/csv_processor.php",
+    url: "http://web.engr.illinois.edu/~msaxena2/visualization/backend/csv_processor.php",
 
     type: "GET",
     // the type of data we expect back
