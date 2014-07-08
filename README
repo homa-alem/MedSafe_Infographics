@@ -1,3 +1,4 @@
-Uses the D3.js (http://www.d3js.org) library to create interactive graphs. 
+Uses the D3.js (http://www.d3js.org) and Rickshaw.js (http://code.shutterstock.com/rickshaw/) libraries to create interactive graphs.
+The graphs are created using data obtained from a CSV.
 Live Demo at http://web.engr.illinois.edu/~msaxena2/project.
 Uses data crunched from a excel sheet to create the graphs
