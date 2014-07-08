@@ -1,6 +1,6 @@
 var width = 500, height = 500;
 var margins = {left:200, right:30, top:20, bottom:30};
-var chart = d3.select("#svgContainer")
+var chart = d3.select("#medSpecGraph")
             .append("svg")
             .attr('width', width + (margins.left + margins.right))
             .attr('height', height)

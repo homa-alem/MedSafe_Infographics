@@ -13,11 +13,20 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="static/css/graph-style.css">
+    <link rel="stylesheet" href="static/css/rickshaw.min.css">
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+    <!--Rickshaw-->
+    
+    <script type="text/javascript" src="static/js/rickshaw.min.js"></script>
 
   </head>
   <body>
@@ -31,36 +40,54 @@
         <h3 class="text-muted">D3 Based Data Visualizations</h3>
       </div>
     <div>
-    </div="container">
-      <div class="row">
-        <div class="col-md-12" id="headingDiv">
-          <h5> Graph Showing the Top K Medical Specialities Related to Device Failure (%)</h5>
-        </div>
-      </div>
-      <div class="row" >
-        <div class="col-md-12" id="waitDiv">
-          <p><img src="static/ajax-loader.gif"> Crunching Numbers...Fetching Data...</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-9" id="svgContainer"></div>
-        <div class="col-md-3" id="sideDiv">
-          <h3> Select k </h3>
+    <div="container">
+        <div class="well well-lg">
+        
           <div class="row">
-           <select class="form-control" id="kSelector">
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12" selected="selected">12</option>
-            </select>
+            <div class="col-md-12" id="headingDiv">
+              <h5> Graph Showing the Top K Medical Specialities Related to Device Failure (%)</h5>
+            </div>
           </div>
+
+          <div class="row" >
+            <div class="col-md-12" id="waitDiv">
+              <p><img src="static/ajax-loader.gif"> Crunching Numbers...Fetching Data...</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-9" id="medSpecGraph"></div>
+            <div class="col-md-3" id="sideDiv">
+              <h3> Select k </h3>
+              <div class="row">
+               <select class="form-control" id="kSelector">
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12" selected="selected">12</option>
+                </select>
+              </div>
+            </div>
         </div>
+      </div>
+    <div class="well well-lg">
+    <div class="row">
+      <div class="col-md-9">
+            <div id="chart_container">
+              
+              <div id="chart"> </div>
+              <div id="timeline"> </div>
+           </div>
+      <div class="col-md-3">
+          <div id="legend"></div>
+      </div>
     </div>
-  </div>
+    </div>
+    </div>
     <script type="text/javascript" src="static/js/graph-drawer.js"></script>
     <script type="text/javascript" src="static/js/data-ajax.js"></script>
 

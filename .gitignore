@@ -1,3 +1,5 @@
 project/backend/lib
+project/static/js/rickshaw.min.js
+project/static/css/rickshaw.min.css
 scratch
 .DS_Store
