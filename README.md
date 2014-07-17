@@ -8,8 +8,10 @@ MedSafe_Infographics
 The project folder contains two other folders:
 
 1. Static
+
 ... As the name suggests, it contains files containing all the relevant js and css.
 2. Backend
+
 ... Contains php files for crunching data from the excel worksheet.
 
 ###### Dependencies
