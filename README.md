@@ -9,10 +9,11 @@ The project folder contains two other folders:
 
 1. Static
 
-... As the name suggests, it contains files containing all the relevant js and css.
+	As the name suggests, it contains files containing all the relevant js and css.	
+
 2. Backend
 
-... Contains php files for crunching data from the excel worksheet.
+	Contains php files for crunching data from the excel worksheet.
 
 ###### Dependencies
 The js files require Rickshaw, which can be obtained at http://code.shutterstock.com/rickshaw . Download and place the .min.js file under static/js.
