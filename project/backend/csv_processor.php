@@ -5,6 +5,11 @@ ini_set("auto_detect_line_endings", true);
 //start year and end year can be changed here or obtained from the request.
 $startYear = 2007;
 $endYear = 2011;
+//static costants
+$YEAR_KEY_INDEX = 12;
+$FAULT_CLASS_INDEX = 25;
+$MERGED_COUNT_INDEX = 24;
+$MEDICAL_SPECIALITY_INDEX = 5;
 //complete list of labels here. Add more labels as needed.
 $specialityLabelsArray = array("Radiology", "Cardiovascular", "Orthopedic", 
                 "General Hospital", "Clinical Chemistry", 
@@ -14,11 +19,11 @@ $jsonDict = array("StartYear" => $startYear, "EndYear"=> $endYear,
 //The zero index corresponds with the first year in the Data array of jsonDict
 if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-      $yearKey = $data[12];
+      $yearKey = $data[$YEAR_KEY_INDEX];
       $yearKey = (int)$yearKey;
-      $faultClass = $data[25];
-      $mergedCount = $data[24];
-      $medicalSpeciality = $data[5];
+      $faultClass = $data[$FAULT_CLASS_INDEX];
+      $mergedCount = $data[$MERGED_COUNT_INDEX];
+      $medicalSpeciality = $data[$MEDICAL_SPECIALITY_INDEX];
       for ($year = $startYear; $year <= $endYear; ++$year){
         if($yearKey == $year){
           
@@ -38,7 +43,8 @@ if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
                                       "General & Plastic Surgery" => 0
                                     );
           }
-          //the key (year) already exists. Currently all classes treated as one. Future enhancements can include splitting these classes
+          /*the key (year) already exists. Currently all classes treated as one. 
+          Future enhancements can include splitting these classes*/
           else{
             if($faultClass == "Computer" || $faultClass == "Software" 
               || $faultClass == "Hardware" || $faultClass == "I/O" 
