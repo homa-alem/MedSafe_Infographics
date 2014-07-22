@@ -1,59 +1,65 @@
 <?php
-$row = 1;
-$medSpecArray = array();
-//$medTypeArray = array();
-$totalCount = 0;
+//settings for json content return
 header('Content-Type: application/json');
 ini_set("auto_detect_line_endings", true);
+//start year and end year can be changed here or obtained from the request.
+$startYear = 2007;
+$endYear = 2011;
+//complete list of labels here. Add more labels as needed.
+$specialityLabelsArray = array("Radiology", "Cardiovascular", "Orthopedic", 
+                "General Hospital", "Clinical Chemistry", 
+                  "General & Plastic Surgery");
+$jsonDict = array("StartYear" => $startYear, "EndYear"=> $endYear, 
+          "SpecialityLabels" => $specialityLabelsArray, "Data"=>array());
+//The zero index corresponds with the first year in the Data array of jsonDict
 if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-       $key = $data[5];
-       $key2 = $data[12];
-       $val = $data[25];
-       $deviceCount = $data[24];
-       if(is_numeric($key2)){
-        $key2 = (int)$key2;
-          if(! array_key_exists($key2, $medTypeArray)){
-            $medTypeArray[$key2] = array("Not_Computer" => 0, "Computer" => 0, "DeviceCount" => 0);
-            
-            
+      $yearKey = $data[12];
+      $yearKey = (int)$yearKey;
+      $faultClass = $data[25];
+      $mergedCount = $data[24];
+      $medicalSpeciality = $data[5];
+      for ($year = $startYear; $year <= $endYear; ++$year){
+        if($yearKey == $year){
+          
+          if(!array_key_exists($yearKey, $jsonDict["Data"])){
+            //initlize the Data for the year with empty values
+            $jsonDict["Data"][$yearKey]["ComputerClassRecalls"] = 0;
+            $jsonDict["Data"][$yearKey]["NotComputerClassRecalls"] = 0;
+            $jsonDict["Data"][$yearKey]["TotalRecalls"] = 0;
+            /*initializing the specitality array. Need to specify all labels since 
+            they act as filters when processing csv data, which can be erratic at times*/
+            $jsonDict["Data"][$yearKey]["SpecialityCounts"] = array(
+                                      "Radiology" => 0,
+                                      "Cardiovascular" => 0,
+                                      "Orthopedic" => 0,
+                                      "General Hospital" => 0,
+                                      "Clinical Chemistry" => 0,
+                                      "General & Plastic Surgery" => 0
+                                    );
           }
-          if($val == "Not_Computer"){
-            $medTypeArray[$key2][$val] += 1;
-          }
+          //the key (year) already exists. Currently all classes treated as one. Future enhancements can include splitting these classes
           else{
-            $medTypeArray[$key2]["Computer"] += 1;
-          }
-          if(is_numeric($deviceCount)){
-            //echo $key2 ." - " . $deviceCount ."<br/>";
+            if($faultClass == "Computer" || $faultClass == "Software" 
+              || $faultClass == "Hardware" || $faultClass == "I/O" 
+                || $faultClass == "Battery" || $faultClass == "Other"){
+              $jsonDict["Data"][$yearKey]["ComputerClassRecalls"] += 1;
+              $jsonDict["Data"][$yearKey]["TotalRecalls"] += (int)$mergedCount;
 
-              $medTypeArray[$key2]["DeviceCount"] += intval($deviceCount);
+              
             }
-       }
-       if($key != "N/A"){
-            $totalCount += 1;
-           if(! array_key_exists($key, $medSpecArray))
-           {
-                $medSpecArray[$key] = 1;
-           }
-           else{
-                $medSpecArray[$key] += 1;
-           }
-        }  
+            if($faultClass == "Not_Computer"){
+              $jsonDict["Data"][$yearKey]["NotComputerClassRecalls"] += 1;
+            }
+            if(in_array($medicalSpeciality, $specialityLabelsArray)){
+              $jsonDict["Data"][$yearKey]["SpecialityCounts"][$medicalSpeciality] += 1;
+            }
+          }
+        }
+      }
     }
     fclose($handle);
 }
-$json_array = array("labels"=>array(), "values"=>array(), "labelCount" => $totalCount);
-$callback = function ($value) use ($totalCount){
-            return ($value / $totalCount);
-            };
-$final_array = array_map($callback , $medSpecArray);
-arsort($final_array);
-array_splice($final_array, 13);
-foreach ($final_array as $key => $value) {
-    array_push($json_array["labels"], $key);
-    array_push($json_array["values"], $value);
-}
-$final_json_array = array("specialityArray" => $json_array, "TypeArray" => $medTypeArray);
-echo json_encode($final_json_array);
+echo json_encode($jsonDict);
 ?>
+
