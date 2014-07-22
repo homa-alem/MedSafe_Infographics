@@ -1,7 +1,8 @@
-MedSafe_Infographics
+MedSafe Infographics
 ====================
 
 ###Visualization of the statistics derived by MedSafe on FDA Recalls
+	Demo at https://web.engr.illinois.edu/~msaxena2/project
 
 #### Important Files
 
@@ -16,11 +17,14 @@ The project folder contains two other folders:
 	Contains php files for crunching data from the excel worksheet.
 
 ###### Dependencies
-The js files require Rickshaw, which can be obtained at http://code.shutterstock.com/rickshaw . Download and place the .min.js file under static/js.
+The js files use Rickshaw (https://github.com/shutterstock/rickshaw), D3 (https://github.com/mbostock/d3) and JQuery. 
+Some of the functionality required changes to the core Rickshaw library, hence the modified 
+library is now under version control. Future enhancements would focus on changing back to having the core library not 
+under version control and only the additions under version control.
 
 
 #### How to Contribute
-Contributions are great. Please feel free to fork the repository and then make pull requests.
+Contributions are welcome. Please feel free to fork the repository.
 
 #### Contact 
 Feel free to make suggestions by raising issues, or by contacting me at msaxena2@illinois.edu.
