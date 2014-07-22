@@ -343,7 +343,7 @@ function draw_charts(begin_year, end_year){
         return d.value + " %";
     });
     var preview = new Rickshaw.Graph.RangeSlider({
-        graph: [bar_graph, recalls_chart],
+        graph: [bar_graph, recalls_chart, severity_graph],
         element: document.querySelector('#timeline'),
 
     });
