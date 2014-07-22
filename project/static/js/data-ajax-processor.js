@@ -12,7 +12,7 @@ var arc = d3.svg.arc()
 function ajax_caller(){
     $.ajax({
     // the URL for the request
-    url: "http://localhost:8888/data-visualization/project/backend/csv_processor.php",
+    url: "http://localhost:8888/data-visualization/scratch/csv_processor_new.php",
 
     type: "GET",
     // the type of data we expect back
@@ -34,8 +34,7 @@ function calculate_percentages(begin_year, end_year){
         total_recalls += pJson.Data[year].ComputerClassRecalls + pJson.Data[year].NotComputerClassRecalls;
         for(i =0 ; i < pJson.SpecialityLabels.length; ++i){
             speciality_label = pJson.SpecialityLabels[i];
-            console.log(speciality_label);
-            percentage_array[i] += pJson.Data[year].SpecialityCounts[speciality_label];
+            percentage_array[i] += pJson.Data[year].SpecialityCounts[speciality_label].RecallEvents;
         }
     }
     return percentage_array.map(function(total){
@@ -68,11 +67,19 @@ function draw_charts(begin_year, end_year){
     var computer_related_recalls_stack = [];
     var max_recall_type_count = 0;
     var not_computer_related_recalls_stack = [];
-    var total_recalls_stack = [];
+    var radiology_stack = [], cardiovascular_stack = [],
+        orthopedic_stack = [], general_hospital_stack = [],
+        clinical_chemistry_stack = [], plastic_surgery_stack = [];
     for(year = begin_year; year <= end_year; ++year){
         computer_related_recalls_stack.push({x: year - begin_year, y : pJson.Data[year].ComputerClassRecalls});
         not_computer_related_recalls_stack.push({x: year - begin_year, y : pJson.Data[year].NotComputerClassRecalls});
-        total_recalls_stack.push({x: year - begin_year, y : pJson.Data[year].TotalRecalls});
+        //total_recalls_stack.push({x: year - begin_year, y : pJson.Data[year].TotalRecalls});
+        radiology_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Radiology"].MergedCount});
+        cardiovascular_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Cardiovascular"].MergedCount});
+        orthopedic_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Orthopedic"].MergedCount});
+        general_hospital_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["General Hospital"].MergedCount});
+        clinical_chemistry_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Clinical Chemistry"].MergedCount});
+        plastic_surgery_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["General & Plastic Surgery"].MergedCount});
         
     }
     var bar_graph = new Rickshaw.Graph( {
@@ -89,10 +96,11 @@ function draw_charts(begin_year, end_year){
                 renderer: 'bar',
         }, {
                 data: not_computer_related_recalls_stack,
-                color: 'lightblue',
+                color: 'darkorange',
                 name: 'Not Computer Related Recalls',
                 renderer: 'bar',
-        }],
+        }
+        ],
         
     });
     var format = function(n) {
@@ -149,6 +157,10 @@ function draw_charts(begin_year, end_year){
 
     //recalls chart
 
+    
+
+
+
     var recalls_chart = new Rickshaw.Graph( {
         element: document.querySelector("#total-recalls-chart"),
         renderer: 'line',
@@ -157,9 +169,37 @@ function draw_charts(begin_year, end_year){
         padding: {left: 0.15, right: 0.04, bottom:0.10},
         interpolation: 'linear',
         series: [{
-                data: total_recalls_stack,
-                color: "steelblue"
-        }],
+                data: radiology_stack,
+                color: "steelblue",
+                name: "Radiology"
+            },
+            {
+                data: cardiovascular_stack,
+                color: "darkorange",
+                name: "Cardiovascular",
+            },
+            {
+                data: orthopedic_stack,
+                color: "green",
+                name: "Orthopedic"
+            },
+            {
+                data: general_hospital_stack,
+                color: "red",
+                name: "Genral Hospital"
+            },
+            {
+                data: clinical_chemistry_stack,
+                color: "purple",
+                name: "Clinical Chemistry"
+            },
+            {
+                data: plastic_surgery_stack,
+                color: "brown",
+                name: "General & Plastic Surgery"
+            }
+
+        ],
         
     });
 
@@ -177,7 +217,22 @@ function draw_charts(begin_year, end_year){
     yAxis.render();
     recalls_chart.render();
     
-    console.log("here");
+    var legend = new Rickshaw.Graph.Legend({
+        graph: recalls_chart,
+        element: document.querySelector('#piechart_legend')
+    });
+
+    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+        graph: recalls_chart,
+        legend: legend
+    });
+
+    var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+        graph: recalls_chart,
+        legend: legend
+    });
+
+
 
     //pie chart using d3
 
@@ -223,6 +278,8 @@ function draw_charts(begin_year, end_year){
         element: document.querySelector('#timeline'),
 
     });
+
+
 
 }
 ajax_caller();
