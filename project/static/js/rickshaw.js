@@ -2468,7 +2468,7 @@ Rickshaw.Graph.RangeSlider = Rickshaw.Class.create({
 	            } );
 	        } );
 
-	        element[0].style.width = graph[0].width + 'px';
+	        //element[0].style.width = graph[0].width + 'px';
 
 	    } else {
 	        $( function() {

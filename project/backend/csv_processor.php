@@ -27,6 +27,7 @@ if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
       $mergedCount = $data[$MERGED_COUNT_INDEX];
       $medicalSpeciality = $data[$MEDICAL_SPECIALITY_INDEX];
       $severityClass = $data[$SEVERITY_CLASS_INDEX];
+      $computerFlag = false;
       for ($year = $startYear; $year <= $endYear; ++$year){
         if($yearKey == $year){
           
@@ -51,9 +52,12 @@ if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
                                       "General & Plastic Surgery" => array("RecallEvents" => 0,
                                                                               "MergedCount" => 0)
                                     );
-            $jsonDict["Data"][$yearKey]["SeverityClassCounts"] = array(1 => 0,
-                                                                        2 => 0,
-                                                                          3 => 0
+            $jsonDict["Data"][$yearKey]["SeverityClassCounts"] = array(1 => array("RecallEvents" => 0,
+                                                                                  "MergedCount" => 0),
+                                                                        2 => array("RecallEvents" => 0,
+                                                                                  "MergedCount" => 0),
+                                                                          3 => array("RecallEvents" => 0,
+                                                                                  "MergedCount" => 0),
                                                                 );
           }
           /*the key (year) already exists. Currently all classes treated as one. 
@@ -62,6 +66,7 @@ if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
             if($faultClass == "Computer" || $faultClass == "Software" 
               || $faultClass == "Hardware" || $faultClass == "I/O" 
                 || $faultClass == "Battery" || $faultClass == "Other"){
+              $computerFlag = true;
               $jsonDict["Data"][$yearKey]["ComputerClassRecalls"] += 1;
               $jsonDict["Data"][$yearKey]["TotalRecalls"] += (int)$mergedCount;
               if(in_array($medicalSpeciality, $specialityLabelsArray)){
@@ -77,7 +82,10 @@ if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
             }
             
             if($severityClass == 1 || $severityClass == 2 || $severityClass == 3){
-              $jsonDict["Data"][$yearKey]["SeverityClassCounts"][$severityClass] += 1;
+              $jsonDict["Data"][$yearKey]["SeverityClassCounts"][$severityClass]["RecallEvents"] += 1;
+              if($computerFlag){
+                $jsonDict["Data"][$yearKey]["SeverityClassCounts"][$severityClass]["MergedCount"] += (int)$mergedCount;
+              }
             }
           }
         }
