@@ -37,8 +37,30 @@ function ajax_caller(){
 
     });
 }
+function calculate_radar_data(begin_year, end_year){
+	data = [];
+	for (cls = 1; cls <= 3; ++cls){
+		var data_obj = {
+					className: String(cls),
+					axes:[]
+				  };
+	
+		for (year = begin_year; year <= end_year; ++year){
+			//class 1
+			var total_recall_time = pJson["Data"][year]["SeverityClassCounts"][cls]["TerminationTime"];
+			var merged_count = pJson["Data"][year]["SeverityClassCounts"][cls]["RecallEvents"];
+			var average = total_recall_time / merged_count;
+			var axis_obj = {
+								axis: String(year),
+								value: average
+						   };
+			data_obj.axes.push(axis_obj);
+		}
+		data.push(data_obj);
+	}
+	return data;
+}
 function calculate_percentages(begin_year, end_year){
-    console.log("here");
     var percentage_array = [0, 0, 0, 0, 0, 0];
     var total_recalls = 0;
     for(year = begin_year; year <= end_year; ++year){
@@ -418,6 +440,16 @@ function draw_charts(begin_year, end_year){
         element: document.querySelector('#timeline'),
 
     });
+    //radar chart
+ 	data = calculate_radar_data(2007, 2011);
+    var radar_chart = RadarChart.chart();
+    var cfg = radar_chart.config();
+    var radar_svg = d3.select("#radar_chart").append('svg')
+                        .attr('width', 700)
+                        .attr('height', 700);
+
+    radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
+    console.log(calculate_radar_data(2007, 2011));
     setSliderTicks();
 
 
