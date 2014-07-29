@@ -104,20 +104,16 @@ function calculate_radar_data(begin_year_index, end_year_index){
 function draw_radar_chart(begin_year_index, end_year_index){
     console.log("here");
     //remove prevoius chart
-    d3.select("#radar_chart").remove();
+    d3.select("#radar_chart svg").remove();
     //redraw the chart with new data. The Chart needs to be redrawn since the 
     // the layout of the chart changes completely
     var data = calculate_radar_data(begin_year_index, end_year_index);
-    console.log(data);
     radar_chart = RadarChart.chart();
-    radar_chart.config({
-        radar_w: radar_w,
-        radar_h: radar_h
-    });
-    radar_svg = d3.select("#radar_chart_div").append('svg')
-                        .attr('id', 'radar_chart')
+    radar_chart.config({w: radar_w, h:radar_h});
+    radar_svg = d3.select("#radar_chart").append('svg')
                         .attr('width', radar_w)
                         .attr('height', radar_h);
+
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 
 }
