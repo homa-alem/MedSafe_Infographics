@@ -21,8 +21,13 @@ var innerRadius = 0;
 var arc = d3.svg.arc()
             .innerRadius(innerRadius)
             .outerRadius(outerRadius);
+//references to various charts. Can be used later for modification/resizing on update etc.
 var radar_svg;
 var bar_graph;
+var recalls_chart;
+var radar_chart;
+var preview;
+
 var format = function(n) {
 
     var map = {
@@ -58,10 +63,20 @@ function ajax_caller(){
     });
 }
 
+//function to set slider ticks
+function set_slider_ticks(){
+    var $slider =  $('#timeline');
+    var max =  $slider.slider("option", "max");    
+    var spacing =  $slider.width() / (max);
+
+    $slider.find('.ui-slider-tick-mark').remove();
+        for (var i = 0; i <= max ; i++) {
+            $('<span class="ui-slider-tick-mark"></span>').text(pJson["StartYear"]+i).css('left', ((spacing * i)-5) + 'px').appendTo($slider);                    
+        }
+}
+
 //function to calculate data for radar graph
-function calculate_radar_data(begin_year, end_year){
-    console.log(begin_year);
-    console.log(end_year);
+function calculate_radar_data(begin_year_index, end_year_index){
     data = [];
     for (cls = 1; cls <= 3; ++cls){
         var data_obj = {
@@ -69,7 +84,7 @@ function calculate_radar_data(begin_year, end_year){
                     axes:[]
                   };
     
-        for (year = begin_year; year <= end_year; ++year){
+        for (year = (begin_year + begin_year_index); year <= (begin_year + end_year_index); ++year){
             //class 1
             var total_recall_time = pJson["Data"][year]["SeverityClassCounts"][cls]["TerminationTime"];
             var merged_count = pJson["Data"][year]["SeverityClassCounts"][cls]["RecallEvents"];
@@ -87,13 +102,14 @@ function calculate_radar_data(begin_year, end_year){
 
 //radar chart drawing fucntion
 function draw_radar_chart(begin_year_index, end_year_index){
+    console.log("here");
     //remove prevoius chart
     d3.select("#radar_chart").remove();
     //redraw the chart with new data. The Chart needs to be redrawn since the 
     // the layout of the chart changes completely
-    var data = calculate_radar_data(begin_year+begin_year_index, begin_year+end_year_index);
-    var radar_chart = RadarChart.chart();
-    var cfg = radar_chart.config();
+    var data = calculate_radar_data(begin_year_index, end_year_index);
+    console.log(data);
+    radar_chart = RadarChart.chart();
     radar_chart.config({
         radar_w: radar_w,
         radar_h: radar_h
@@ -201,12 +217,163 @@ function draw_class_bar_chart(begin_year, end_year){
 }
 
 function draw_recalls_line_chart(begin_year, end_year){
+
+    var radiology_stack = [], cardiovascular_stack = [],
+        orthopedic_stack = [], general_hospital_stack = [],
+        clinical_chemistry_stack = [], plastic_surgery_stack = [];
+
+    for(year = begin_year; year <= end_year; ++year){
+        radiology_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Radiology"].MergedCount});
+        cardiovascular_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Cardiovascular"].MergedCount});
+        orthopedic_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Orthopedic"].MergedCount});
+        general_hospital_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["General Hospital"].MergedCount});
+        clinical_chemistry_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["Clinical Chemistry"].MergedCount});
+        plastic_surgery_stack.push({x: year  - begin_year, y : pJson.Data[year].SpecialityCounts["General & Plastic Surgery"].MergedCount});
+    }
+    recalls_chart = new Rickshaw.Graph( {
+        element: document.querySelector("#total-recalls-chart"),
+        renderer: 'line',
+        width: bar_w,
+        height: bar_h,
+        padding: {left: 0.15, right: 0.04, bottom:0.10},
+        interpolation: 'linear',
+        series: [{
+                data: radiology_stack,
+                color: "steelblue",
+                name: "Radiology"
+            },
+            {
+                data: cardiovascular_stack,
+                color: "darkorange",
+                name: "Cardiovascular",
+            },
+            {
+                data: orthopedic_stack,
+                color: "green",
+                name: "Orthopedic"
+            },
+            {
+                data: general_hospital_stack,
+                color: "red",
+                name: "Genral Hospital"
+            },
+            {
+                data: clinical_chemistry_stack,
+                color: "purple",
+                name: "Clinical Chemistry"
+            },
+            {
+                data: plastic_surgery_stack,
+                color: "brown",
+                name: "General & Plastic Surgery"
+            }
+
+        ],
+        
+    });
+
+    var x_ticks = new Rickshaw.Graph.Axis.X( {
+        graph: recalls_chart,
+        orientation: 'top',
+        tickFormat: format
+    } );
+
+    var yAxis = new Rickshaw.Graph.Axis.Y({
+        graph: recalls_chart,
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        ticks: 12
+    });
+    yAxis.render();
+    recalls_chart.render();
     
+    var legend = new Rickshaw.Graph.Legend({
+        graph: recalls_chart,
+        element: document.querySelector('#piechart_legend')
+    });
+
+    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+        graph: recalls_chart,
+        legend: legend
+    });
+
+    var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+        graph: recalls_chart,
+        legend: legend
+    });
+}
+function redraw_piechart(dataset2){
+    var paths = d3.selectAll(".arc path");
+    paths.data(pie(dataset2))
+         .attr("d", arc);
+    var text = d3.selectAll(".arc text");
+    text.data(pie(dataset2))
+        .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";})
+        .attr("text-anchor", "middle")
+        .html(function(d) {
+            return d.value + " %";
+    });
+}
+function draw_piechart(begin_year, end_year){
+     var dataset = calculate_percentages(begin_year, end_year);
+    //Create SVG element
+    var svg = d3.select("#speciality_piechart")
+            .append("svg")
+            .attr("width", pi_w)
+            .attr("height", pi_h);
+
+    //Set up groups
+    var arcs = svg.selectAll("g.arc")
+              .data(pie(dataset))
+              .enter()
+              .append("g")
+              .attr("class", "arc")
+              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+
+    //Draw arc paths
+    arcs.append("path")
+    .attr("fill", function(d, i) {
+        return color(i);
+    })
+    .attr("d", arc);
+
+    //Labels
+    arcs.append("text")
+    .attr("transform", function(d) {
+        return "translate(" + arc.centroid(d) + ")";
+    })
+    .attr("text-anchor", "middle")
+    .text(function(d) {
+        return d.value + " %";
+    });
+}
+
+function draw_timeline(){
+    preview = new Rickshaw.Graph.RangeSlider({
+        //hack since d3 graphs controlled from rickshaw.js. Fix later.
+        graph: [bar_graph, recalls_chart],
+        element: document.querySelector('#timeline'),
+
+    });
+}
+function init_radar_chart(begin_year, end_year){
+    data = calculate_radar_data(0, end_year - begin_year);
+    radar_chart = RadarChart.chart();
+    radar_chart.config({w: radar_w, h:radar_h});
+    var radar_svg = d3.select("#radar_chart").append('svg')
+                        .attr('width', radar_w)
+                        .attr('height', radar_h);
+
+    radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
 
 function draw_charts(begin_year, end_year){
-    console.log("here");
     draw_class_bar_chart(begin_year, end_year);
+    draw_recalls_line_chart(begin_year, end_year);
+    draw_piechart(begin_year, end_year);
+    init_radar_chart(begin_year, end_year);
+    draw_timeline();
+    set_slider_ticks();
 
 }
 ajax_caller();

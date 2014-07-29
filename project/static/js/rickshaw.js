@@ -2451,6 +2451,7 @@ Rickshaw.Graph.RangeSlider = Rickshaw.Class.create({
 	                        graph[i].window.xMin = ui.values[0];
 	                        graph[i].window.xMax = ui.values[1];
 	                        process_piechart(ui.values[0], ui.values[1]);
+	                        draw_radar_chart(ui.values[0], ui.values[1]);
 	                        graph[i].update();
 
 	                        // if we're at an extreme, stick there
