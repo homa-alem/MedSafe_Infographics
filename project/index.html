@@ -57,9 +57,9 @@
     <link rel="stylesheet" href="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.css">
 
     <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript" src="static/js/rickshaw.js"></script>
     <script src="http://d3js.org/d3.v3.js"></script>
     <script src="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.js"></script>
@@ -86,32 +86,39 @@
         </div>
       </div>
       <div class="row top-buffer">
-        <div class="col-xs-6" id="graph_container">
+        <div class="col-xs-4" id="graph_container">
           
-            <div class="center-block"> 
-              <div id="class-bar-chart"></div>
+            <div class="row"> 
+            	<div class="col-xs-12">
+              		<div id="class-bar-chart"></div>
+            	</div>
             </div>
-        </div>
+            <div class="row top-buffer"> 
+            	<div class="col-xs-12">
+              		<div id="legend"></div>
+            	</div>
+            </div>
 
-        <div class="col-xs-6">
-          <div class="center-block">
-            <div id="total-recalls-chart"></div>
-          </div>
         </div>
-      </div>
+        <div class="col-xs-8">
+        	<div class="row">
+        		<div class="col-xs-6">
+        			<div id="total-recalls-chart"></div>
+        		</div>
+        		<div class="col-xs-6">
+        			<div class="row">
+        				<div class="col-xs-12">
+        					<div id="speciality_piechart"></div>
+        				</div>
 
-      <div class="row top-buffer">
-          <div class="col-xs-4">
-            <div id="legend" class="center-block"></div>
-          </div>
-    
-          <div class="col-xs-4">
-            <div id="speciality_piechart" class="center-block"></div>
-          </div>
-          <div class="col-xs-4">
-            <div id="piechart_legend" class="center-block"></div>
-          </div>
-      </div>
+        				<div class="col-xs-12">
+        					<div id="piechart_legend"></div>
+        				</div>
+        			</div>
+        		</div>
+        	</div>	
+        </div>
+     
 
       <div class="row top-buffer">
         <div class="col-xs-1">
@@ -139,6 +146,6 @@
       </div>
 
     </div>
-     <script type="text/javascript" src="static/js/data-ajax-processor.js"></script>
+     <script type="text/javascript" src="static/js/graph-drawer.js"></script>
   </body>
 </html>
