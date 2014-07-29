@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>D3 Data Visualizations</title>
+    <title>Medsafe Infographics</title>
 
     <!-- Bootstrap -->
 
@@ -38,7 +38,7 @@
           <li class="active"><a href="#">Home</a></li>
           <li><a href="">About</a></li>
         </ul>
-        <h3 class="text-muted">Medsafe Infographics</h3>
+        <h1 class="text-muted">Medsafe Infographics</h1>
       </div>
 
       <div class="row timeline-buffer">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="row top-buffer">
-        <div class="col-xs-4" id="graph_container">
+        <div class="col-xs-4 well" id="graph_container">
           
             <div class="row"> 
             	<div class="col-xs-12">
@@ -59,14 +59,19 @@
               		<div id="legend"></div>
             	</div>
             </div>
+            <div class="row top-buffer"> 
+              <div class="col-xs-12">
+                  <div id="radar_chart"></div>
+              </div>
+            </div>
 
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-8 well">
         	<div class="row">
-        		<div class="col-xs-6">
+        		<div class="col-xs-8">
         			<div id="total-recalls-chart"></div>
         		</div>
-        		<div class="col-xs-6">
+        		<div class="col-xs-4">
         			<div class="row">
         				<div class="col-xs-12">
         					<div id="speciality_piechart"></div>
@@ -79,32 +84,10 @@
         		</div>
         	</div>	
         </div>
+      </div>
+
      
-
-      <div class="row top-buffer">
-        <div class="col-xs-1">
-            <div id="axis_0"></div>
-        </div>
-        <div class="col-xs-10"> 
-            <div id="severity_chart" class="severity_chart"></div>
-        </div>
-        <div class="col-xs-1">
-                <div id="axis_1"></div> 
-        </div>
-      </div>
-
-      </div>
-      <div class="row top-buffer">
-        <div class="col-xs-12">
-            <div id="severity_chart_legend" class="center-block"></div>
-          </div>
-
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div id="radar_chart"></div>
-        </div>
-      </div>
+     
 
     </div>
      <script type="text/javascript" src="static/js/graph-drawer.js"></script>

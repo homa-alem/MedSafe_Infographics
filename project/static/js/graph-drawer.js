@@ -9,12 +9,14 @@ var pie = d3.layout.pie();
 var begin_year;
 var end_year;
 //Width and height
-var bar_w = 350;
-var bar_h = 300;
-var pi_w = 200;
-var pi_h= 200;
-var radar_w = 300;
-var radar_h = 300;
+var bar_w = $("#class-bar-chart").width();
+var bar_h = bar_w - 50;
+var line_w = $("#total-recalls-chart").width() - 100;
+var line_h = line_w - 50; 
+var pi_w = $("#speciality_piechart").width() - 50;
+var pi_h= pi_w;
+var radar_w = $("#class-bar-chart").width() - 30;
+var radar_h = radar_w;
 var color = d3.scale.category10();
 var outerRadius = pi_w / 2;
 var innerRadius = 0;
@@ -111,8 +113,8 @@ function draw_radar_chart(begin_year_index, end_year_index){
     radar_chart = RadarChart.chart();
     radar_chart.config({w: radar_w, h:radar_h});
     radar_svg = d3.select("#radar_chart").append('svg')
-                        .attr('width', radar_w)
-                        .attr('height', radar_h);
+                        .attr("viewBox", ("0 " + "0 " + String(radar_w) + " " + String(radar_h)))
+                        .attr("preserveAspectRatio", "none");
 
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 
@@ -229,8 +231,8 @@ function draw_recalls_line_chart(begin_year, end_year){
     recalls_chart = new Rickshaw.Graph( {
         element: document.querySelector("#total-recalls-chart"),
         renderer: 'line',
-        width: bar_w,
-        height: bar_h,
+        width: line_w,
+        height: line_h,
         padding: {left: 0.15, right: 0.04, bottom:0.10},
         interpolation: 'linear',
         series: [{
@@ -315,8 +317,8 @@ function draw_piechart(begin_year, end_year){
     //Create SVG element
     var svg = d3.select("#speciality_piechart")
             .append("svg")
-            .attr("width", pi_w)
-            .attr("height", pi_h);
+            .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
+            .attr("preserveAspectRatio", "none");
 
     //Set up groups
     var arcs = svg.selectAll("g.arc")
@@ -357,9 +359,8 @@ function init_radar_chart(begin_year, end_year){
     radar_chart = RadarChart.chart();
     radar_chart.config({w: radar_w, h:radar_h});
     var radar_svg = d3.select("#radar_chart").append('svg')
-                        .attr('width', radar_w)
-                        .attr('height', radar_h);
-
+                        .attr("viewBox", ("0 " + "0 " + String(radar_w) + " " + String(radar_h)))
+                        .attr("preserveAspectRatio", "none");
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
 
@@ -372,5 +373,24 @@ function draw_charts(begin_year, end_year){
     set_slider_ticks();
 
 }
+//make the main ajax call
 ajax_caller();
-
+//functions to resize the graph
+function resize_controller(){
+    bar_w = $('#class-bar-chart').width();
+    bar_h = bar_w - 50;
+    bar_graph.configure({
+        width: (bar_w),
+        height: (bar_h)
+    })
+    bar_graph.render();
+    line_w = $("#total-recalls-chart").width();
+    line_h = line_w - 50; 
+    recalls_chart.configure({
+        width: (line_w),
+        height: (line_h)
+    })
+    recalls_chart.render();
+    
+}
+window.addEventListener('resize', resize_controller); 

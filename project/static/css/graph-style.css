@@ -4,7 +4,7 @@
   right: 400px;
 }
 .top-buffer{
-  margin-top: 50px;
+  margin-top: 20px;
 }
 .col-centered{
   float: none;
@@ -36,4 +36,14 @@
 }
 .timeline-buffer{
   margin-top: 70px;
+}
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+.well{
+    background: rgba(255, 255, 255, 0.9);
+}
+.neg-buffer{
+  margin-top: -20px;
 }
