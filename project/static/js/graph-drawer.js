@@ -308,6 +308,7 @@ function redraw_piechart(dataset2){
         .attr("transform", function(d) {
                 return "translate(" + arc.centroid(d) + ")";})
         .attr("text-anchor", "middle")
+        .classed('pi_label', true)
         .html(function(d) {
             return d.value + " %";
     });
@@ -341,6 +342,7 @@ function draw_piechart(begin_year, end_year){
         return "translate(" + arc.centroid(d) + ")";
     })
     .attr("text-anchor", "middle")
+    .classed('pi_label', true)
     .text(function(d) {
         return d.value + " %";
     });
@@ -360,7 +362,7 @@ function init_radar_chart(begin_year, end_year){
     radar_chart.config({w: radar_w, h:radar_h});
     var radar_svg = d3.select("#radar_chart").append('svg')
                         .attr("viewBox", ("0 " + "0 " + String(radar_w) + " " + String(radar_h)))
-                        .attr("preserveAspectRatio", "none");
+                        .attr("preserveAspectRatio", preserveAspectRatio="xMinYMin meet");
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
 

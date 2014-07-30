@@ -47,3 +47,30 @@
 .neg-buffer{
   margin-top: -20px;
 }
+.pi_label{
+  font-family: Arial, sans-serif;
+  border-radius: 3px;
+  padding: 6px;
+  opacity: 0.5;
+  border: 1px solid #e0e0e0;
+  font-size: 12px;
+}
+.rickshaw_legend{
+  background: none;
+  font-family: Arial, sans-serif;
+  border-radius: 3px;
+  padding: 6px;
+  opacity: 0.5;
+}
+.rickshaw_legend .label{
+  margin: 0;
+  white-space: nowrap;
+  display: inline;
+  font-size: inherit;
+  background-color: transparent;
+  color: black;
+  font-weight: normal;
+  line-height: normal;
+  padding: 0px;
+  text-shadow: none;  
+}
