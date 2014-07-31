@@ -11,12 +11,14 @@ var end_year;
 //Width and height
 var bar_w = $("#class-bar-chart").width();
 var bar_h = bar_w - 50;
-var line_w = $("#total-recalls-chart").width() - 100;
-var line_h = line_w - 50; 
-var pi_w = $("#speciality_piechart").width() - 50;
+var line_w = bar_w;
+var line_h = bar_h; 
+var pi_w = $("#speciality_piechart").width() - 80;
 var pi_h= pi_w;
-var radar_w = $("#class-bar-chart").width() - 30;
+var radar_w = $("#class-bar-chart").width() - 70;
 var radar_h = radar_w;
+var bubble_w = $("#bubble_chart").width();
+var bubble_h = bubble_w/2;
 var color = d3.scale.category10();
 var outerRadius = pi_w / 2;
 var innerRadius = 0;
@@ -29,7 +31,7 @@ var bar_graph;
 var recalls_chart;
 var radar_chart;
 var preview;
-var circle_radius = 80;
+var circle_radius = bubble_h - 30;
 var format = function(n) {
 
     var map = {
@@ -73,7 +75,10 @@ function set_slider_ticks(){
 
     $slider.find('.ui-slider-tick-mark').remove();
         for (var i = 0; i <= max ; i++) {
-            $('<span class="ui-slider-tick-mark"></span>').text(pJson["StartYear"]+i).css('left', ((spacing * i)-5) + 'px').appendTo($slider);                    
+            $('<span class="ui-slider-tick-mark"></span>')
+                .text(pJson["StartYear"]+i)
+                .css('left', ((spacing * i)-5) + 'px')
+                .appendTo($slider);                    
         }
 }
 
@@ -256,32 +261,32 @@ function draw_recalls_line_chart(begin_year, end_year){
         interpolation: 'linear',
         series: [{
                 data: radiology_stack,
-                color: "steelblue",
+                color: color(0),
                 name: "Radiology"
             },
             {
                 data: cardiovascular_stack,
-                color: "darkorange",
+                color: color(1),
                 name: "Cardiovascular",
             },
             {
                 data: orthopedic_stack,
-                color: "green",
+                color: color(2),
                 name: "Orthopedic"
             },
             {
                 data: general_hospital_stack,
-                color: "red",
+                color: color(3),
                 name: "Genral Hospital"
             },
             {
                 data: clinical_chemistry_stack,
-                color: "purple",
+                color: color(4),
                 name: "Clinical Chemistry"
             },
             {
                 data: plastic_surgery_stack,
-                color: "brown",
+                color: color(5),
                 name: "General & Plastic Surgery"
             }
 
@@ -337,8 +342,11 @@ function draw_piechart(begin_year, end_year){
     //Create SVG element
     var svg = d3.select("#speciality_piechart")
             .append("svg")
+            .attr("width", pi_w)
+            .attr("height", pi_h);
+            /*
             .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
-            .attr("preserveAspectRatio", "none");
+            .attr("preserveAspectRatio", "none");*/
 
     //Set up groups
     var arcs = svg.selectAll("g.arc")
@@ -380,12 +388,36 @@ function init_radar_chart(begin_year, end_year){
     radar_chart = RadarChart.chart();
     radar_chart.config({w: radar_w, h:radar_h});
     var radar_svg = d3.select("#radar_chart").append('svg')
+    /*
                         .attr("viewBox", ("0 " + "0 " + String(radar_w) + " " + String(radar_h)))
-                        .attr("preserveAspectRatio", preserveAspectRatio="xMinYMin meet");
+                        .attr("preserveAspectRatio", preserveAspectRatio="xMinYMin meet");*/
+                    .attr("width", radar_w)
+                    .attr("height", radar_h);
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
 function draw_bubble_chart(begin_year, end_year){
-    console.log(calculate_bubble_data(begin_year, end_year));
+    var prev_boundary = 10;
+    var radius_data = calculate_bubble_data(begin_year, end_year);
+    var svg = d3.select("#bubble_chart")
+                .append("svg")
+                .attr("width", bubble_w)
+                .attr("height", bubble_h);
+    var circle = svg.selectAll("circle")
+                    .data(radius_data)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", function(d, i){
+                        var x = prev_boundary + d/2;
+                        prev_boundary += d + 10;
+                        return x;
+                    })
+                    .attr("cy", (bubble_h/2))
+                    .attr("r", function(d, i){
+                        return d/2;
+                    })
+                    .attr("fill", function(d, i){
+                        return color(i);
+                    });
 }
 
 function draw_charts(begin_year, end_year){
