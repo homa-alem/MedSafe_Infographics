@@ -29,7 +29,7 @@ var bar_graph;
 var recalls_chart;
 var radar_chart;
 var preview;
-
+var circle_radius = 80;
 var format = function(n) {
 
     var map = {
@@ -141,6 +141,25 @@ function process_piechart(begin_index, end_index){
     var end_year = parseInt(end_index + pJson["StartYear"]);
     var percentages = calculate_percentages(start_year, end_year);
     redraw_piechart(percentages);
+}
+
+function calculate_bubble_data(begin_year, end_year){
+    var recalls_count = [0, 0, 0];
+    console.log(begin_year);
+    for (year = begin_year; year <= end_year; ++year){
+        recalls_count[0] += pJson["Data"][year]["SubmissionType"]["510(k)"];
+        recalls_count[1] += pJson["Data"][year]["SubmissionType"]["510(K) Exempt"];
+        recalls_count[2] += pJson["Data"][year]["SubmissionType"]["PMA"];
+    }
+    console.log(recalls_count);
+    var total = 0;
+    for(var i = 0;i < recalls_count.length; ++i){
+        total += recalls_count[i];
+    }
+    return recalls_count.map(function(count){
+        return (count/total) * circle_radius;
+    });
+
 }
 
 function draw_class_bar_chart(begin_year, end_year){
@@ -365,6 +384,9 @@ function init_radar_chart(begin_year, end_year){
                         .attr("preserveAspectRatio", preserveAspectRatio="xMinYMin meet");
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
+function draw_bubble_chart(begin_year, end_year){
+    console.log(calculate_bubble_data(begin_year, end_year));
+}
 
 function draw_charts(begin_year, end_year){
     draw_class_bar_chart(begin_year, end_year);
@@ -373,6 +395,7 @@ function draw_charts(begin_year, end_year){
     init_radar_chart(begin_year, end_year);
     draw_timeline();
     set_slider_ticks();
+    draw_bubble_chart(begin_year, end_year);
 
 }
 //make the main ajax call
