@@ -432,7 +432,7 @@ function draw_bubble_chart(begin_year, end_year){
 }
 function draw_bubbles_chart(begin_year_index, end_year_index){
 	var radii = calculate_bubble_radii(begin_year, end_year);
-	draw_bubble(begin_year, end_year, "510(k)", radii[0]);
+		draw_bubble(begin_year, end_year, "510(k)", radii[0]);
 	draw_bubble(begin_year, end_year, "510(K) Exempt", radii[1]);
 	draw_bubble(begin_year, end_year, "PMA", radii[2]);
 	
@@ -444,12 +444,14 @@ function update_bubbles_chart(begin_year_index, end_year_index){
 	**/
 	d3.select("#chart_510 svg").remove();
 	d3.select("#chart_510_Exempt svg").remove();
+	d3.select("#chart_PMA svg").remove();
 	//redraw
 	var cur_begin_year = begin_year + begin_year_index;
 	var cur_end_year = begin_year + end_year_index;
 	var radii = calculate_bubble_radii(cur_begin_year, cur_end_year);
 	draw_bubble(cur_begin_year, cur_end_year, "510(k)", radii[0]);
 	draw_bubble(cur_begin_year, cur_end_year, "510(K) Exempt", radii[1]);
+	draw_bubble(cur_begin_year, cur_end_year, "PMA", radii[2]);
 	
 }
 function draw_charts(begin_year, end_year){
