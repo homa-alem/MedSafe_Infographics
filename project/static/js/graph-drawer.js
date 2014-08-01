@@ -15,7 +15,7 @@ var line_w = bar_w;
 var line_h = bar_h; 
 var pi_w = $("#speciality_piechart").width() - 80;
 var pi_h= pi_w;
-var radar_w = $("#class-bar-chart").width() - 70;
+var radar_w = $("#class-bar-chart").width() - 100;
 var radar_h = radar_w;
 var bubble_w = $("#chart_510").width();
 var bubble_h = bubble_w/2;
@@ -32,6 +32,7 @@ var recalls_chart;
 var radar_chart;
 var preview;
 var circle_radius = bubble_h;
+var rad_510;
 var format = function(n) {
 
     var map = {
@@ -173,7 +174,7 @@ function calculate_bubble_radii(begin_year, end_year){
         total += recalls_count[i];
     }
     return recalls_count.map(function(count){
-        return (count/total) * circle_radius;
+        return Math.sqrt((count/total)) * circle_radius;
     });
 }
 
@@ -433,7 +434,7 @@ function draw_bubbles_chart(begin_year_index, end_year_index){
 	var radii = calculate_bubble_radii(begin_year, end_year);
 	draw_bubble(begin_year, end_year, "510(k)", radii[0]);
 	draw_bubble(begin_year, end_year, "510(K) Exempt", radii[1]);
-	//draw_bubble(begin_year, end_year, "PMA", radii[2]);
+	draw_bubble(begin_year, end_year, "PMA", radii[2]);
 	
 }
 function update_bubbles_chart(begin_year_index, end_year_index){
@@ -470,6 +471,7 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
     var id;
     if(bubble_class == "510(k)"){
     	id = "chart_510";
+    	rad_510 = radius;
     }
     else if(bubble_class == "510(K) Exempt"){
     	id = "chart_510_Exempt";
@@ -480,7 +482,7 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
     var svg = d3.select("#"+id)
             .append("svg")
             .attr("width", (radius*2)+10)
-            .attr("height", (radius*2)+10);
+            .attr("height", (circle_radius*2)+10);
             /*
             .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
             .attr("preserveAspectRatio", "none");*/
@@ -490,8 +492,13 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
               .data(pie(data))
               .enter()
               .append("g")
-              .attr("class", "arc")
-              .attr("transform", "translate(" + radius + "," + radius + ")");
+              .attr("class", "arc");
+    if (bubble_class == "510(k)"){
+    	arcs.attr("transform", "translate(" + radius + "," + radius + ")");
+    }
+    else{
+    	arcs.attr("transform", "translate(" + radius + "," + rad_510 + ")");
+    }
 
     //Draw arc paths
     arcs.append("path")
