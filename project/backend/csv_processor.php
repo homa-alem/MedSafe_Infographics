@@ -80,9 +80,18 @@ they act as filters when processing csv data, which can be erratic at times*/
                                                                                                               "MergedCount" => 0),
                                                                       "Software Update" => array("RecallEvents" => 0,
                                                                                                 "MergedCount" => 0));
-             $jsonDict["Data"][$yearKey]["SubmissionType"] = array("510(k)" => 0,
-                                                                    "510(K) Exempt" => 0,
-                                                                    "PMA" => 0);
+             $jsonDict["Data"][$yearKey]["SubmissionType"] = array("510(k)" => array("RecallEvents" => 0,
+                                                                                      "ClassI"=> 0,
+                                                                                        "ClassII" => 0,
+                                                                                          "ClassIII" => 0),
+                                                                    "510(K) Exempt" => array("RecallEvents" => 0,
+                                                                                      "ClassI"=> 0,
+                                                                                        "ClassII" => 0,
+                                                                                          "ClassIII" => 0),
+                                                                    "PMA" => array("RecallEvents" => 0,
+                                                                                      "ClassI"=> 0,
+                                                                                        "ClassII" => 0,
+                                                                                          "ClassIII" => 0));
           }
           /*the key (year) already exists. Currently all classes treated as one.
 Future enhancements can include splitting these classes*/
@@ -119,7 +128,18 @@ Future enhancements can include splitting these classes*/
               
             }
             if(in_array($submissionType, $SubmissionTypeLabels)){
-               $jsonDict["Data"][$yearKey]["SubmissionType"][$submissionType] += 1;
+               $jsonDict["Data"][$yearKey]["SubmissionType"][$submissionType]["RecallEvents"] += 1;
+                if(($severityClass == 1 || $severityClass == 2 || $severityClass == 3)){
+                  if($severityClass == 1){
+                    $jsonDict["Data"][$yearKey]["SubmissionType"][$submissionType]["ClassI"] += 1;
+                  }
+                  if($severityClass == 2){
+                    $jsonDict["Data"][$yearKey]["SubmissionType"][$submissionType]["ClassII"] += 1;
+                  }
+                  if($severityClass == 3){
+                    $jsonDict["Data"][$yearKey]["SubmissionType"][$submissionType]["ClassIII"] += 1;
+                  }
+                }
             }
           }
         }

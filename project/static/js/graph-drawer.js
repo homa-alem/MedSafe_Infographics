@@ -17,7 +17,7 @@ var pi_w = $("#speciality_piechart").width() - 80;
 var pi_h= pi_w;
 var radar_w = $("#class-bar-chart").width() - 70;
 var radar_h = radar_w;
-var bubble_w = $("#bubble_chart").width();
+var bubble_w = $("#bubble_chart_1").width();
 var bubble_h = bubble_w/2;
 var color = d3.scale.category10();
 var outerRadius = pi_w / 2;
@@ -124,7 +124,21 @@ function draw_radar_chart(begin_year_index, end_year_index){
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 
 }
-
+function process_bubble_data(begin_year, end_year, bubble_class){
+	var total = 0;
+	var recall_array = [0, 0, 0]
+	for (year = begin_year; year <= end_year; ++year){
+		recall_array[0] += pJson["Data"][year]["SubmissionType"][bubble_class]["ClassI"];
+        recall_array[1] += pJson["Data"][year]["SubmissionType"][bubble_class]["ClassII"];
+        recall_array[2] += pJson["Data"][year]["SubmissionType"][bubble_class]["ClassIII"];
+        total += recall_array[0];
+        total += recall_array[1];
+        total += recall_array[2];
+	}
+	return recall_array.map(function(type_total){
+		return type_total/total;
+	});
+}
 //data processing function for the pi chart
 function calculate_percentages(begin_year, end_year){
     var percentage_array = [0, 0, 0, 0, 0, 0];
@@ -148,13 +162,13 @@ function process_piechart(begin_index, end_index){
     redraw_piechart(percentages);
 }
 
-function calculate_bubble_data(begin_year, end_year){
+function calculate_bubble_radii(begin_year, end_year){
     var recalls_count = [0, 0, 0];
     console.log(begin_year);
     for (year = begin_year; year <= end_year; ++year){
-        recalls_count[0] += pJson["Data"][year]["SubmissionType"]["510(k)"];
-        recalls_count[1] += pJson["Data"][year]["SubmissionType"]["510(K) Exempt"];
-        recalls_count[2] += pJson["Data"][year]["SubmissionType"]["PMA"];
+        recalls_count[0] += pJson["Data"][year]["SubmissionType"]["510(k)"]["RecallEvents"];
+        recalls_count[1] += pJson["Data"][year]["SubmissionType"]["510(K) Exempt"]["RecallEvents"];
+        recalls_count[2] += pJson["Data"][year]["SubmissionType"]["PMA"]["RecallEvents"];
     }
     console.log(recalls_count);
     var total = 0;
@@ -187,12 +201,12 @@ function draw_class_bar_chart(begin_year, end_year){
         padding: {left: 0.15, right: 0.04, bottom: 0.10},
         series: [{
                 data: computer_related_recalls_stack,
-                color: 'steelblue',
+                color: color(0),
                 name: 'Computer Related Recalls',
                 renderer: 'bar',
         }, {
                 data: not_computer_related_recalls_stack,
-                color: 'darkorange',
+                color: color(1),
                 name: 'Not Computer Related Recalls',
                 renderer: 'bar',
         }
@@ -324,7 +338,7 @@ function draw_recalls_line_chart(begin_year, end_year){
     });
 }
 function redraw_piechart(dataset2){
-    var paths = d3.selectAll(".arc path");
+    var paths = d3.selectAll("#speciality_piechart .arc path");
     paths.data(pie(dataset2))
          .attr("d", arc);
     var text = d3.selectAll(".arc text");
@@ -419,7 +433,11 @@ function draw_bubble_chart(begin_year, end_year){
                         return color(i);
                     });
 }
+function draw_bubbles_chart(begin_year, end_year){
+	var radii = calculate_bubble_radii(begin_year, end_year);
+	
 
+}
 function draw_charts(begin_year, end_year){
     draw_class_bar_chart(begin_year, end_year);
     draw_recalls_line_chart(begin_year, end_year);
@@ -427,8 +445,40 @@ function draw_charts(begin_year, end_year){
     init_radar_chart(begin_year, end_year);
     draw_timeline();
     set_slider_ticks();
-    draw_bubble_chart(begin_year, end_year);
+    draw_bubbles_chart(begin_year, end_year)
+    //draw_bubble_chart(begin_year, end_year);
 
+}
+function draw_bubble(begin_year, end_year, bubble_class, radius){
+	var radii = calculate_bubble_data(begin_year, end_year);
+	if (bubble_class = "510(K)"){
+		var data = process_bubble_data(begin_year, end_year, "510(k)");
+	    //Create SVG element
+	    var svg = d3.select("#bubble_chart_1")
+	            .append("svg")
+	            .attr("width", radii[0])
+	            .attr("height", radii[0]);
+	            /*
+	            .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
+	            .attr("preserveAspectRatio", "none");*/
+
+	    //Set up groups
+	    var arcs = svg.selectAll("g.arc")
+	              .data(pie(dataset))
+	              .enter()
+	              .append("g")
+	              .attr("class", "arc")
+	              .attr("transform", "translate(" + radii[0] + "," + 0 + ")");
+
+	    //Draw arc paths
+	    arcs.append("path")
+	    .attr("fill", function(d, i) {
+	        return color(i);
+	    })
+	    .attr("d", arc);
+
+
+	}
 }
 //make the main ajax call
 ajax_caller();
