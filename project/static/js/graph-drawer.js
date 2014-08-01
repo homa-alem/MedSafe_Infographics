@@ -17,7 +17,7 @@ var pi_w = $("#speciality_piechart").width() - 80;
 var pi_h= pi_w;
 var radar_w = $("#class-bar-chart").width() - 70;
 var radar_h = radar_w;
-var bubble_w = $("#bubble_chart_1").width();
+var bubble_w = $("#chart_510").width();
 var bubble_h = bubble_w/2;
 var color = d3.scale.category10();
 var outerRadius = pi_w / 2;
@@ -31,7 +31,7 @@ var bar_graph;
 var recalls_chart;
 var radar_chart;
 var preview;
-var circle_radius = bubble_h - 30;
+var circle_radius = bubble_h;
 var format = function(n) {
 
     var map = {
@@ -109,7 +109,6 @@ function calculate_radar_data(begin_year_index, end_year_index){
 
 //radar chart drawing fucntion
 function draw_radar_chart(begin_year_index, end_year_index){
-    console.log("here");
     //remove prevoius chart
     d3.select("#radar_chart svg").remove();
     //redraw the chart with new data. The Chart needs to be redrawn since the 
@@ -164,13 +163,11 @@ function process_piechart(begin_index, end_index){
 
 function calculate_bubble_radii(begin_year, end_year){
     var recalls_count = [0, 0, 0];
-    console.log(begin_year);
     for (year = begin_year; year <= end_year; ++year){
         recalls_count[0] += pJson["Data"][year]["SubmissionType"]["510(k)"]["RecallEvents"];
         recalls_count[1] += pJson["Data"][year]["SubmissionType"]["510(K) Exempt"]["RecallEvents"];
         recalls_count[2] += pJson["Data"][year]["SubmissionType"]["PMA"]["RecallEvents"];
     }
-    console.log(recalls_count);
     var total = 0;
     for(var i = 0;i < recalls_count.length; ++i){
         total += recalls_count[i];
@@ -178,7 +175,6 @@ function calculate_bubble_radii(begin_year, end_year){
     return recalls_count.map(function(count){
         return (count/total) * circle_radius;
     });
-
 }
 
 function draw_class_bar_chart(begin_year, end_year){
@@ -435,7 +431,9 @@ function draw_bubble_chart(begin_year, end_year){
 }
 function draw_bubbles_chart(begin_year, end_year){
 	var radii = calculate_bubble_radii(begin_year, end_year);
-	
+	draw_bubble(begin_year, end_year, "510(k)", radii[0]);
+	draw_bubble(begin_year, end_year, "510(K) Exempt", radii[1]);
+	draw_bubble(begin_year, end_year, "PMA", radii[2]);
 
 }
 function draw_charts(begin_year, end_year){
@@ -450,35 +448,45 @@ function draw_charts(begin_year, end_year){
 
 }
 function draw_bubble(begin_year, end_year, bubble_class, radius){
-	var radii = calculate_bubble_data(begin_year, end_year);
-	if (bubble_class = "510(K)"){
-		var data = process_bubble_data(begin_year, end_year, "510(k)");
-	    //Create SVG element
-	    var svg = d3.select("#bubble_chart_1")
-	            .append("svg")
-	            .attr("width", radii[0])
-	            .attr("height", radii[0]);
-	            /*
-	            .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
-	            .attr("preserveAspectRatio", "none");*/
+	var cur_arc = d3.svg.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+	var data = process_bubble_data(begin_year, end_year, bubble_class);
+    var id;
+    if(bubble_class == "510(k)"){
+    	id = "chart_510";
+    }
+    else if(bubble_class == "510(K) Exempt"){
+    	id = "chart_510_Exempt";
+    }
+    else{
+    	id = "chart_" + bubble_class;
+    }
+    console.log("here "+id+ " - "+radius);
+    var svg = d3.select("#"+id)
+            .append("svg")
+            .attr("width", (radius*2)+10)
+            .attr("height", (radius*2)+10);
+            /*
+            .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
+            .attr("preserveAspectRatio", "none");*/
 
-	    //Set up groups
-	    var arcs = svg.selectAll("g.arc")
-	              .data(pie(dataset))
-	              .enter()
-	              .append("g")
-	              .attr("class", "arc")
-	              .attr("transform", "translate(" + radii[0] + "," + 0 + ")");
+    //Set up groups
+    var arcs = svg.selectAll("g.arc")
+              .data(pie(data))
+              .enter()
+              .append("g")
+              .attr("class", "arc")
+              .attr("transform", "translate(" + radius + "," + radius + ")");
 
-	    //Draw arc paths
-	    arcs.append("path")
-	    .attr("fill", function(d, i) {
-	        return color(i);
-	    })
-	    .attr("d", arc);
+    //Draw arc paths
+    arcs.append("path")
+    .attr("fill", function(d, i) {
+        return color(i);
+    })
+    .attr("d", cur_arc);
 
 
-	}
 }
 //make the main ajax call
 ajax_caller();
