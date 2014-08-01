@@ -429,12 +429,27 @@ function draw_bubble_chart(begin_year, end_year){
                         return color(i);
                     });
 }
-function draw_bubbles_chart(begin_year, end_year){
+function draw_bubbles_chart(begin_year_index, end_year_index){
 	var radii = calculate_bubble_radii(begin_year, end_year);
 	draw_bubble(begin_year, end_year, "510(k)", radii[0]);
 	draw_bubble(begin_year, end_year, "510(K) Exempt", radii[1]);
 	//draw_bubble(begin_year, end_year, "PMA", radii[2]);
-
+	
+}
+function update_bubbles_chart(begin_year_index, end_year_index){
+	/** remove original charts. Again necessary since the charts aren't being updated 
+	** in this case. The radius of the circles will change, hence circles are 
+	** redrawn, and the pie proportions changed. Change this in the future.
+	**/
+	d3.select("#chart_510 svg").remove();
+	d3.select("#chart_510_Exempt svg").remove();
+	//redraw
+	var cur_begin_year = begin_year + begin_year_index;
+	var cur_end_year = begin_year + end_year_index;
+	var radii = calculate_bubble_radii(cur_begin_year, cur_end_year);
+	draw_bubble(cur_begin_year, cur_end_year, "510(k)", radii[0]);
+	draw_bubble(cur_begin_year, cur_end_year, "510(K) Exempt", radii[1]);
+	
 }
 function draw_charts(begin_year, end_year){
     draw_class_bar_chart(begin_year, end_year);
@@ -462,7 +477,6 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
     else{
     	id = "chart_" + bubble_class;
     }
-    console.log("here "+id+ " - "+radius);
     var svg = d3.select("#"+id)
             .append("svg")
             .attr("width", (radius*2)+10)
