@@ -433,7 +433,7 @@ function draw_bubbles_chart(begin_year, end_year){
 	var radii = calculate_bubble_radii(begin_year, end_year);
 	draw_bubble(begin_year, end_year, "510(k)", radii[0]);
 	draw_bubble(begin_year, end_year, "510(K) Exempt", radii[1]);
-	draw_bubble(begin_year, end_year, "PMA", radii[2]);
+	//draw_bubble(begin_year, end_year, "PMA", radii[2]);
 
 }
 function draw_charts(begin_year, end_year){
