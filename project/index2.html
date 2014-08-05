@@ -1,0 +1,280 @@
+<div class="container" id="mainContainer">
+  <!-- Header -->
+  <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="">About</a></li>
+        </ul>
+        <h1 class="text-muted">Medsafe Infographics</h1>
+  </div>
+
+  <div id="main-graph-container">
+    <!-- Timeline -->
+    <div class="row timeline-buffer">
+      <div class="col-xs-12">
+        <div id="timeline" class="center-block"></div>
+      </div>
+    </div>
+    
+    <!-- Main Graphs -->
+    <div class="row">
+      <div class="col-xs-4">
+        <div class="row well">
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="class-bar-chart">
+                <!-- Class bar chart here-->
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="legend">
+                <!-- class bar chart lengend goes here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row well">
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="radar_chart">
+                <!-- radar chart goes here -->
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="bubble_legend" class="rickshaw_legend">
+                <ul class="ui-sortable">
+                  <li class="line">
+                    <div class="swatch" style="background-color: #1f77b4;"></div>
+                    <span class="label">
+                      Class 1 Recalls
+                    </span>
+                  </li>
+                  <li class="line">
+                    <div class="swatch" style="background-color: #ff7f0e;"></div>
+                    <span class="label">
+                      Class 2 Recalls
+                    </span>
+                  </li>
+                  <li class="line">
+                    <div class="swatch" style="background-color: #2ca02c;"></div>
+                    <span class="label">
+                      Class 3 Recalls
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- Anymore content in this column goes here --> 
+      </div>
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="row well">
+            <div class="row">
+              <div class="col-xs-7">
+                <div id="total_recalls_chart">
+                </div>
+              </div>
+              <div class="col-xs-5">
+                <div class="row">
+                  <div id="col-xs-12">
+                    <div ic="speciality_piechart">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div id="col-xs-12">
+                    <div id="piechart_legend">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row well">
+            <div class="col-xs-7">
+              <div class="row">
+                <div class="col-xs-7">
+                  <div id="chart_510"></div>
+                </div>
+                <div class="col-xs-4">
+                  <div id="chart_510_Exempt"></div>
+                </div>
+                <div class="col-xs-1">
+                  <div id="chart_PMA"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4 col-xs-offset-1 top-buffer">
+              <div id="bubble_legend" class="rickshaw_legend">
+                <ul class="ui-sortable">
+                  <li class="line">
+                    <div class="swatch" style="background-color: #1f77b4;"></div>
+                    <span class="label">
+                      Class 1 Recalls
+                    </span>
+                  </li>
+                  <li class="line">
+                    <div class="swatch" style="background-color: #ff7f0e;"></div>
+                    <span class="label">
+                      Class 2 Recalls
+                    </span>
+                  </li>
+                  <li class="line">
+                    <div class="swatch" style="background-color: #2ca02c;"></div>
+                    <span class="label">
+                      Class 3 Recalls
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script type="text/javascript" src="static/js/graph-drawer.js"></script>
+
+
+--------
+   <div class="container" id="mainContainer">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="">About</a></li>
+        </ul>
+        <h1 class="text-muted">Medsafe Infographics</h1>
+      </div>
+        <div class="row timeline-buffer">
+         <div class="col-xs-12">
+           <div id="timeline" class="center-block"></div>
+          </i>
+        </div>
+        <div class="row top-buffer">
+          <div class="col-xs-4 well" id="graph_container">
+            <div class="well">
+              <div class="row"> 
+                <div class="col-xs-12">
+                    <div id="class-bar-chart"></div>
+                </div>
+              </div>
+              <div class="row top-buffer"> 
+                <div class="col-xs-12">
+                    <div id="legend"></div>
+                </div>
+              </div>
+            </div>
+              <div class="row well top-buffer">
+                <div class="row">
+                  <div class="col-xs-12 ">
+                      <h5 class="text-muted">Avg. Termination time per class vs Years </h5>
+                      <div id="radar_chart"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div id="bubble_legend" class="rickshaw_legend">
+                      <ul class="ui-sortable">
+                        <li class="line">
+                          <div class="swatch" style="background-color: #1f77b4;"></div>
+                          <span class="label">
+                            Class 1 Recalls
+                          </span>
+                        </li>
+                        <li class="line">
+                          <div class="swatch" style="background-color: #ff7f0e;"></div>
+                          <span class="label">
+                            Class 2 Recalls
+                          </span>
+                        </li>
+                        <li class="line">
+                          <div class="swatch" style="background-color: #2ca02c;"></div>
+                          <span class="label">
+                            Class 3 Recalls
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+          </div>
+          <div class="col-xs-8 well">
+            <div class="well">
+            <div class="row">
+              
+                <div class="col-xs-7">
+                  <div id="total-recalls-chart"></div>
+                </div>
+                <div class="col-xs-5">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div id="speciality_piechart"></div>
+                    </div>
+
+                    <div class="col-xs-12">
+                      <div id="piechart_legend"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row well">
+             
+                <div class="col-xs-7">
+                  <div class="row">
+                    <div class="col-xs-7">
+                      <div id="chart_510"></div>
+                    </div>
+                    <div class="col-xs-4">
+                      <div id="chart_510_Exempt"></div>
+                    </div>
+                    <div class="col-xs-1">
+                      <div id="chart_PMA"></div>
+                    </div>
+                  </div>
+                </div>
+              
+
+                <div class="col-xs-4 col-xs-offset-1 top-buffer">
+                  <div id="bubble_legend" class="rickshaw_legend">
+                    <ul class="ui-sortable">
+                      <li class="line">
+                        <div class="swatch" style="background-color: #1f77b4;"></div>
+                        <span class="label">
+                          Class 1 Recalls
+                        </span>
+                      </li>
+                      <li class="line">
+                        <div class="swatch" style="background-color: #ff7f0e;"></div>
+                        <span class="label">
+                          Class 2 Recalls
+                        </span>
+                      </li>
+                      <li class="line">
+                        <div class="swatch" style="background-color: #2ca02c;"></div>
+                        <span class="label">
+                          Class 3 Recalls
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+
+     
+     
+
+    </div>
+     <script type="text/javascript" src="static/js/graph-drawer.js"></script>

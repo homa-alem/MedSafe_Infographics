@@ -15,7 +15,7 @@ var line_w = bar_w;
 var line_h = bar_h; 
 var pi_w = $("#speciality_piechart").width() - 80;
 var pi_h= pi_w;
-var radar_w = $("#class-bar-chart").width() - 100;
+var radar_w = $("#class-bar-chart").width() - 60;
 var radar_h = radar_w;
 var bubble_w = $("#chart_510").width();
 var bubble_h = bubble_w/2;
@@ -58,10 +58,12 @@ function ajax_caller(){
     // code to run if the request succeeds;
     // the response is passed to the function
     success: function( json ) {
+        $('#main-graph-container').show();
         pJson=json;
         begin_year = pJson["StartYear"];
         end_year = pJson["EndYear"];
         draw_charts(begin_year, end_year);
+
         
     },
 
@@ -511,8 +513,7 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
 
 
 }
-//make the main ajax call
-ajax_caller();
+
 //functions to resize the graph
 function resize_controller(){
     bar_w = $('#class-bar-chart').width();
@@ -525,10 +526,15 @@ function resize_controller(){
     line_w = $("#total-recalls-chart").width();
     line_h = line_w - 50; 
     recalls_chart.configure({
-        width: (line_w),
-        height: (line_h)
+        width: (bar_w),
+        height: (bar_h)
     })
     recalls_chart.render();
     
 }
 window.addEventListener('resize', resize_controller); 
+$("#main-graph-container").hide();
+//make the main ajax call
+$( function(){
+    ajax_caller();
+});
