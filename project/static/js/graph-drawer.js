@@ -179,7 +179,18 @@ function calculate_bubble_radii(begin_year, end_year){
         return Math.sqrt((count/total)) * circle_radius;
     });
 }
-
+function bubble_counts(begin_year, end_year){
+    console.log("here");
+    var recalls_count = [0, 0, 0];
+    for (year = begin_year; year <= end_year; ++year){
+        recalls_count[0] += pJson["Data"][year]["SubmissionType"]["510(k)"]["RecallEvents"];
+        recalls_count[1] += pJson["Data"][year]["SubmissionType"]["510(K) Exempt"]["RecallEvents"];
+        recalls_count[2] += pJson["Data"][year]["SubmissionType"]["PMA"]["RecallEvents"];
+    }
+    $("#chart_510_text").html("510(k): "+recalls_count[0]);
+    $("#chart_510_Exempt_text").html("510(k): "+recalls_count[1]);
+    $("#chart_PMA_text").html("PMA: "+recalls_count[2]);
+}
 function draw_class_bar_chart(begin_year, end_year){
     var computer_related_recalls = 0;
     var non_computer_related_recalls = 0;
@@ -431,12 +442,14 @@ function draw_bubble_chart(begin_year, end_year){
                     .attr("fill", function(d, i){
                         return color(i);
                     });
+    
 }
 function draw_bubbles_chart(begin_year_index, end_year_index){
 	var radii = calculate_bubble_radii(begin_year, end_year);
 		draw_bubble(begin_year, end_year, "510(k)", radii[0]);
 	draw_bubble(begin_year, end_year, "510(K) Exempt", radii[1]);
 	draw_bubble(begin_year, end_year, "PMA", radii[2]);
+    bubble_counts(begin_year, end_year);
 	
 }
 function update_bubbles_chart(begin_year_index, end_year_index){
@@ -454,6 +467,7 @@ function update_bubbles_chart(begin_year_index, end_year_index){
 	draw_bubble(cur_begin_year, cur_end_year, "510(k)", radii[0]);
 	draw_bubble(cur_begin_year, cur_end_year, "510(K) Exempt", radii[1]);
 	draw_bubble(cur_begin_year, cur_end_year, "PMA", radii[2]);
+    bubble_counts(cur_begin_year, cur_end_year);
 	
 }
 function draw_charts(begin_year, end_year){
@@ -464,7 +478,7 @@ function draw_charts(begin_year, end_year){
     draw_timeline();
     set_slider_ticks();
     draw_bubbles_chart(begin_year, end_year)
-    //draw_bubble_chart(begin_year, end_year);
+    draw_bubble_chart(begin_year, end_year);
 
 }
 function draw_bubble(begin_year, end_year, bubble_class, radius){
@@ -511,7 +525,7 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
     })
     .attr("d", cur_arc);
 
-
+    
 }
 
 //functions to resize the graph
