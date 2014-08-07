@@ -548,7 +548,20 @@ function resize_controller(){
 }
 window.addEventListener('resize', resize_controller); 
 $("#main-graph-container").hide();
+$("#about").hide();
 //make the main ajax call
 $( function(){
     ajax_caller();
+    $('a[href^="#"]').on('click',function (e) {
+        e.preventDefault();
+
+        var target = this.hash,
+        $target = $(target);
+
+        $('html, body').stop().animate({
+            'scrollTop': $target.offset().top
+        }, 900, 'swing', function () {
+            window.location.hash = target;
+        });
+    });
 });
