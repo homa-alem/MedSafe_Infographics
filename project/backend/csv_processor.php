@@ -3,8 +3,8 @@
 header('Content-Type: application/json');
 ini_set("auto_detect_line_endings", true);
 //start year and end year can be changed here or obtained from the request.
-$startYear = 2007;
-$endYear = 2011;
+$startYear = PHP_INT_MAX;
+$endYear = 0;
 //static costants
 $YEAR_KEY_INDEX = 12;
 $FAULT_CLASS_INDEX = 25;
@@ -14,6 +14,26 @@ $SEVERITY_CLASS_INDEX = 10;
 $TERMINATION_TIME_INDEX = 23;
 $ACTION_CATEGORY_INDEX = 28;
 $SUBMISSION_TYPE_INDEX = 7;
+
+//getting the start year and end year values
+if(($handle1 = fopen("medical_data.csv", "r")) !== FALSE){
+  while(($data = fgetcsv($handle1, 1000, ",")) !== FALSE){
+    $yearKey = $data[$YEAR_KEY_INDEX];
+    $yearKey = (int)$yearKey;
+    if($yearKey > 1900 && $yearKey < 2500){
+      if($yearKey > $endYear){
+        $endYear = $yearKey;
+      }
+      if($yearKey < $startYear){
+        $startYear = $yearKey;
+      }
+    }
+
+  }
+}
+
+fclose($handle1);
+
 //complete list of labels here. Add more labels as needed.
 $specialityLabelsArray = array("Radiology", "Cardiovascular", "Orthopedic",
                 "General Hospital", "Clinical Chemistry",
@@ -24,10 +44,14 @@ $SubmissionTypeLabels = array("510(k)", "510(K) Exempt", "PMA");
 $jsonDict = array("StartYear" => $startYear, "EndYear"=> $endYear,
           "SpecialityLabels" => $specialityLabelsArray, "actionCategoryLabels" => $actionCategoryLabels,
           "Data"=>array());
+
+
+
 //The zero index corresponds with the first year in the Data array of jsonDict
 if (($handle = fopen("medical_data.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
       $yearKey = $data[$YEAR_KEY_INDEX];
+
 
       $yearKey = (int)$yearKey;
       $faultClass = $data[$FAULT_CLASS_INDEX];

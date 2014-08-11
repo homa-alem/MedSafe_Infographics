@@ -419,6 +419,7 @@ function init_radar_chart(begin_year, end_year){
                     .attr("height", radar_h);
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
+/*
 function draw_bubble_chart(begin_year, end_year){
     var prev_boundary = 10;
     var radius_data = calculate_bubble_data(begin_year, end_year);
@@ -444,6 +445,7 @@ function draw_bubble_chart(begin_year, end_year){
                     });
     
 }
+*/
 function draw_bubbles_chart(begin_year_index, end_year_index){
 	var radii = calculate_bubble_radii(begin_year, end_year);
 		draw_bubble(begin_year, end_year, "510(k)", radii[0]);
@@ -478,7 +480,7 @@ function draw_charts(begin_year, end_year){
     draw_timeline();
     set_slider_ticks();
     draw_bubbles_chart(begin_year, end_year)
-    draw_bubble_chart(begin_year, end_year);
+ //   draw_bubble_chart(begin_year, end_year);
 
 }
 function draw_bubble(begin_year, end_year, bubble_class, radius){
@@ -529,6 +531,7 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
 }
 
 //functions to resize the graph
+/*
 function resize_controller(){
     bar_w = $('#class-bar-chart').width();
     bar_h = bar_w - 50;
@@ -546,7 +549,8 @@ function resize_controller(){
     recalls_chart.render();
     
 }
-window.addEventListener('resize', resize_controller); 
+*/
+//window.addEventListener('resize', resize_controller); 
 $("#main-graph-container").hide();
 $("#about").hide();
 //make the main ajax call
