@@ -244,21 +244,6 @@ function draw_class_bar_chart(begin_year, end_year){
 
     } );
 
-    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
-    graph: bar_graph,
-    legend: legend
-    } );
-
-    var order = new Rickshaw.Graph.Behavior.Series.Order( {
-    graph: bar_graph,
-    legend: legend
-    } );
-
-    var highlight = new Rickshaw.Graph.Behavior.Series.Highlight( {
-    graph: bar_graph,
-    legend: legend
-    } );
-
     bar_graph.render();
 }
 
@@ -332,20 +317,7 @@ function draw_recalls_line_chart(begin_year, end_year){
     yAxis.render();
     recalls_chart.render();
     
-    var legend = new Rickshaw.Graph.Legend({
-        graph: recalls_chart,
-        element: document.querySelector('#piechart_legend')
-    });
-
-    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
-        graph: recalls_chart,
-        legend: legend
-    });
-
-    var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
-        graph: recalls_chart,
-        legend: legend
-    });
+    
 }
 function redraw_piechart(dataset2){
     var paths = d3.selectAll("#speciality_piechart .arc path");

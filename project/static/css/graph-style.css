@@ -6,6 +6,9 @@
 .top-buffer{
   margin-top: 20px;
 }
+.bottom-buffer{
+  padding-bottom: 20px;
+}
 .col-centered{
   float: none;
   margin: 0 auto;
