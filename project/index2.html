@@ -33,13 +33,12 @@
       <div class="container" id="mainContainer">
       <!-- Header -->
       <div class="header">
-            <ul class="nav nav-pills pull-right">
-              <li><a href="#">Home</a></li>
+            <ul class="nav nav-pills pull-right" id="controls">
               <li><a href="#about">About</a></li>
             </ul>
             <h1 class="text-muted">Medsafe Infographics</h1>
       </div>
-
+      <p id="wait-div" class="text-muted"> Please wait while we process the Data ... </p>
       <div id="main-graph-container">
         <!-- Timeline -->
         <div class="row timeline-buffer">
@@ -49,8 +48,8 @@
         </div>
         
         <!-- Main Graphs -->
-          <div class="row">
-            <div class="col-xs-4">
+          <div class="row row-bottom-margin">
+            <div class="col-xs-5">
               <div class="row">
                 <div class="col-xs-12 well">
                   <div class="row">
@@ -73,7 +72,7 @@
             </div>
 
 
-            <div class="col-xs-8">
+            <div class="col-xs-7">
               <div class="row">
                 <div class="col-xs-12 well">
                   <div class="row">
@@ -100,15 +99,15 @@
                       <div class="rickshaw_legend">
                           <ul class="ui-sortable">
                             <li class="line">
-                              <div style="background-color: rgb(148, 103, 189);" class="swatch"></div>
+                              <div style="background-color: #1f77b4;" class="swatch"></div>
                               <span class="label">
-                                Clinical Chemistry
+                                Radiology
                               </span>
                             </li>
                             <li class="line">
-                              <div style="background-color: rgb(44, 160, 44);" class="swatch"></div>
+                              <div style="background-color: #ff7f0e;" class="swatch"></div>
                               <span class="label">
-                                Orthopedic
+                                Cardiovascular
                               </span>
                             </li>
                           </ul>
@@ -118,15 +117,15 @@
                       <div class="rickshaw_legend">
                         <ul class="ui-sortable">
                           <li class="line">
-                            <div style="background-color: rgb(31, 119, 180);" class="swatch"></div>
+                            <div style="background-color: #2ca02c;" class="swatch"></div>
                             <span class="label">
-                              Radiology
+                              Orthopedic
                             </span>
                           </li>
                           <li class="line">
-                            <div style="background-color: rgb(140, 86, 75);" class="swatch"></div>
+                            <div style="background-color: #d62728" class="swatch"></div>
                             <span class="label">
-                              General and Plastic Surgery
+                              General Hospital
                             </span>
                           </li>
                         </ul>
@@ -136,15 +135,15 @@
                       <div class="rickshaw_legend">
                         <ul class="ui-sortable">
                           <li class="line">
-                            <div style="background-color: rgb(214, 39, 40);" class="swatch"></div>
+                            <div style="background-color: #9467bd;" class="swatch"></div>
                             <span class="label">
-                              General Hospital
+                              Clinical Chemistry
                             </span>
                           </li>
                           <li class="line">
-                            <div style="background-color: rgb(255, 127, 14);" class="swatch"></div>
+                            <div style="background-color: #8c564b;" class="swatch"></div>
                             <span class="label">
-                              Cardiovascular
+                              "General & Plastic Surgery"
                             </span>
                           </li>
 
@@ -158,8 +157,8 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-xs-12 well">
+          <div class="row top-buffer-negative">
+            <div class="col-xs-12 well top-buffer-negative">
               <div class="row">
                 <div class="col-xs-4">
                   <div class="row">
@@ -223,14 +222,18 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="about">
+                <h4 class="text-muted"> About </h4>
+                <p class="text-muted">
+                  The FDA produces Recalls Data every year. This data is extracted from the FDA website, and then used to draw visualizations
+                </p>
+                <a class="text-muted" href="#mainContainer">Back to Top</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="about">
-          <h1 class="text-muted">About</h1>
-          <p class="text-muted">
-            The FDA publishes recall records online in databases. 
-          </p>
-        </div>
-      </div>
     <script type="text/javascript" src="static/js/graph-drawer.js"></script>
 
   </body>

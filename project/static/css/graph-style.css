@@ -80,3 +80,10 @@
 .top-legend-buffer{
   margin-top: 75px;
 }
+.top-buffer-negative{
+  margin-top: -20px
+}
+.left-buffer-negative{
+  margin-left: -40px
+}
+.row { margin-bottom:0px; }

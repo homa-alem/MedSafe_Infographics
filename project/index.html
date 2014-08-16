@@ -33,13 +33,12 @@
       <div class="container" id="mainContainer">
       <!-- Header -->
       <div class="header">
-            <ul class="nav nav-pills pull-right">
-              <li><a href="#">Home</a></li>
+            <ul class="nav nav-pills pull-right" id="controls">
               <li><a href="#about">About</a></li>
             </ul>
             <h1 class="text-muted">Medsafe Infographics</h1>
       </div>
-
+      <p id="wait-div" class="text-muted"> Please wait while we process the Data ... </p>
       <div id="main-graph-container">
         <!-- Timeline -->
         <div class="row timeline-buffer">
@@ -49,153 +48,192 @@
         </div>
         
         <!-- Main Graphs -->
-        <div class="row top-buffer">
-          <div class="col-xs-4">
-            <div class="row">
-              <div class="col-xs-12 well">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <h5 class="text-muted"> Number of Computer and Non Computer Related Recalls vs Year </h5>
-                    <div id="class-bar-chart">
-                      <!-- Class bar chart here-->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12">
-                    <div id="legend">
-                      <!-- class bar chart lengend goes here -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 well">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <h5 class="text-muted">Avg. Termination time per Recall Class vs Years </h5>
-                    <div id="radar_chart">
-                      <!-- radar chart goes here -->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-12">
-                    <div id="radar_legend" class="rickshaw_legend">
-                      <ul class="ui-sortable">
-                        <li class="line">
-                          <div class="swatch" style="background-color: #1f77b4;"></div>
-                          <span class="label">
-                            Class 1 Recalls
-                          </span>
-                        </li>
-                        <li class="line">
-                          <div class="swatch" style="background-color: #ff7f0e;"></div>
-                          <span class="label">
-                            Class 2 Recalls
-                          </span>
-                        </li>
-                        <li class="line">
-                          <div class="swatch" style="background-color: #2ca02c;"></div>
-                          <span class="label">
-                            Class 3 Recalls
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>    
-            </div> 
-            <!-- Anymore content in this column goes here --> 
-          </div>
-          <div class="col-xs-8">
-            <div class="row">
-              <div class="col-xs-12 well">
-                <div class="row">
-                  
-                    <div class="col-xs-7">
-                      <h5 class="text-muted"> No. of recall events per medical speciality vs Years </h5>
-                      <div id="total-recalls-chart">
-                      </div>
-                    </div>
-                    <div class="col-xs-5">
-                      <div class="row">
-                        <div id="col-xs-12">
-                          <h5 class="text-muted"> Percentage distribution of recall events by top 6 medical Specialities </h5>
-                          <div id="speciality_piechart">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div id="col-xs-12">
-                          <div id="piechart_legend">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  
-                </div>
-              </div>
-            </div>
+          <div class="row row-bottom-margin">
+            <div class="col-xs-4">
               <div class="row">
                 <div class="col-xs-12 well">
-                  <h5 class="text-muted">Submission Types classified by Recall Class (Area proportional to Number) </h5>
                   <div class="row">
-                    <div class="col-xs-7">
-                      <div class="row">
-                        <div class="col-xs-5">
-                          <div id="chart_510"></div>
-                          <p class="text-muted" id="chart_510_text"></p>
-                        </div>
-                        <div class="col-xs-4">
-                          <div id="chart_510_Exempt"></div>
-                          <p class="text-muted" id="chart_510_Exempt_text"></p>
-                        </div>
-                        <div class="col-xs-3">
-                          <div id="chart_PMA"></div>
-                          <p class="text-muted" id="chart_PMA_text"></p>
-                        </div>
+                    <div class="col-xs-12">
+                      <h5 class="text-muted"> No. of Computer / Non Computer Related Recalls vs Year </h5>
+                      <div id="class-bar-chart">
+                        <!-- Class bar chart here-->
                       </div>
                     </div>
-                    <div class="col-xs-4 col-xs-offset-1 top-buffer">
-                      <div id="bubble_legend" class="rickshaw_legend">
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div id="legend">
+                        <!-- class bar chart lengend goes here -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-xs-8">
+              <div class="row">
+                <div class="col-xs-12 well">
+                  <div class="row">
+                    
+                      <div class="col-xs-7">
+                        <h5 class="text-muted"> Count of Computer Related Devices per medical speciality vs Years </h5>
+                        <div id="total-recalls-chart">
+                        </div>
+                      </div>
+                      <div class="col-xs-5">
+                        <div class="row">
+                          <div id="col-xs-12">
+                            <h5 class="text-muted left-buffer-negative"> Percentage distribution of recall events by Medical Specialty</h5>
+                            <div id="speciality_piechart">
+                            </div>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <div class="rickshaw_legend">
+                          <ul class="ui-sortable">
+                            <li class="line">
+                              <div style="background-color: #1f77b4;" class="swatch"></div>
+                              <span class="label">
+                                Radiology
+                              </span>
+                            </li>
+                            <li class="line">
+                              <div style="background-color: #ff7f0e;" class="swatch"></div>
+                              <span class="label">
+                                Cardiovascular
+                              </span>
+                            </li>
+                          </ul>
+                      </div>
+                    </div>
+                    <div class="col-xs-4">
+                      <div class="rickshaw_legend">
                         <ul class="ui-sortable">
                           <li class="line">
-                            <div class="swatch" style="background-color: #1f77b4;"></div>
+                            <div style="background-color: #2ca02c;" class="swatch"></div>
                             <span class="label">
-                              Class 1 Recalls
+                              Anesthesiology
                             </span>
                           </li>
                           <li class="line">
-                            <div class="swatch" style="background-color: #ff7f0e;"></div>
+                            <div style="background-color: #d62728" class="swatch"></div>
                             <span class="label">
-                              Class 2 Recalls
+                              General Hospital
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-xs-4">
+                      <div class="rickshaw_legend">
+                        <ul class="ui-sortable">
+                          <li class="line">
+                            <div style="background-color: #9467bd;" class="swatch"></div>
+                            <span class="label">
+                              Clinical Chemistry
                             </span>
                           </li>
                           <li class="line">
-                            <div class="swatch" style="background-color: #2ca02c;"></div>
+                            <div style="background-color: #8c564b;" class="swatch"></div>
                             <span class="label">
-                              Class 3 Recalls
+                              Hematology
                             </span>
                           </li>
+
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+            </div>
+          </div>
+
+          <div class="row top-buffer-negative">
+            <div class="col-xs-12 well top-buffer-negative">
+              <div class="row">
+                <div class="col-xs-4">
+                  <div class="row">
+                      <div class="col-xs-12">
+                        <h5 class="text-muted">Avg. Termination time per Recall Class vs Years </h5>
+                        <div id="radar_chart">
+                          <!-- radar chart goes here -->
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-xs-8">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <h5 class="text-muted">Submission Types classified by Recall Class (Area proportional to Number) </h5>
+                      <div class="row">
+                        <div class="col-xs-7">
+                          <div class="row">
+                            <div class="col-xs-5">
+                              <div id="chart_510"></div>
+                              <p class="text-muted" id="chart_510_text"></p>
+                            </div>
+                            <div class="col-xs-4">
+                              <div id="chart_510_Exempt"></div>
+                              <p class="text-muted" id="chart_510_Exempt_text"></p>
+                            </div>
+                            <div class="col-xs-3">
+                              <div id="chart_PMA"></div>
+                              <p class="text-muted" id="chart_PMA_text"></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-4 col-xs-offset-1 top-buffer">
+                          <div id="bubble_legend" class="rickshaw_legend">
+                            <ul class="ui-sortable">
+                              <li class="line">
+                                <div class="swatch" style="background-color: #1f77b4;"></div>
+                                <span class="label">
+                                  Class 1 Recalls
+                                </span>
+                              </li>
+                              <li class="line">
+                                <div class="swatch" style="background-color: #ff7f0e;"></div>
+                                <span class="label">
+                                  Class 2 Recalls
+                                </span>
+                              </li>
+                              <li class="line">
+                                <div class="swatch" style="background-color: #2ca02c;"></div>
+                                <span class="label">
+                                  Class 3 Recalls
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div id="about">
+                <h4 class="text-muted"> About </h4>
+                <p class="text-muted">
+                  The FDA produces Recalls Data every year. This data is extracted from the FDA website, and then used to draw visualizations.
+                </p>
+                <a class="text-muted" href="#mainContainer">Back to Top</a>
+              </div>
             </div>
           </div>
         </div>
-        <div id="about">
-          <h1 class="text-muted">About</h1>
-          <p class="text-muted">
-            The FDA publishes recall records online in databases. 
-          </p>
-        </div>
-      </div>
     <script type="text/javascript" src="static/js/graph-drawer.js"></script>
 
   </body>

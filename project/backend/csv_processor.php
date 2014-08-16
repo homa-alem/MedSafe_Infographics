@@ -35,9 +35,9 @@ if(($handle1 = fopen("medical_data.csv", "r")) !== FALSE){
 fclose($handle1);
 
 //complete list of labels here. Add more labels as needed.
-$specialityLabelsArray = array("Radiology", "Cardiovascular", "Orthopedic",
+$specialityLabelsArray = array("Radiology", "Cardiovascular", "Anesthesiology",
                 "General Hospital", "Clinical Chemistry",
-                  "General & Plastic Surgery");
+                  "Hematology");
 $actionCategoryLabels =array("Remove or Replace", "Repair", "Safety Notice/Insructions", "Software Update");
 $SubmissionTypeLabels = array("510(k)", "510(K) Exempt", "PMA");
 
@@ -128,7 +128,7 @@ Future enhancements can include splitting these classes*/
               $jsonDict["Data"][$yearKey]["TotalRecalls"] += (int)$mergedCount;
               if(in_array($medicalSpeciality, $specialityLabelsArray)){
                 $jsonDict["Data"][$yearKey]["SpecialityCounts"][$medicalSpeciality]["MergedCount"] += (int)$mergedCount;
-                
+                $jsonDict["Data"][$yearKey]["SpecialityCounts"][$medicalSpeciality]["RecallEvents"] += 1;
               }
               if(in_array($actionCategory, $actionCategoryLabels)){
                 $jsonDict["Data"][$yearKey]["ActionCategoryCounts"][$actionCategory]["MergedCount"] += (int)$mergedCount;
@@ -139,9 +139,11 @@ Future enhancements can include splitting these classes*/
             if($faultClass == "Not_Computer"){
               $jsonDict["Data"][$yearKey]["NotComputerClassRecalls"] += 1;
             }
+            /*
             if(in_array($medicalSpeciality, $specialityLabelsArray)){
-              $jsonDict["Data"][$yearKey]["SpecialityCounts"][$medicalSpeciality]["RecallEvents"] += 1;
+              
             }
+            */
             
             if(($severityClass == 1 || $severityClass == 2 || $severityClass == 3)){
               $jsonDict["Data"][$yearKey]["SeverityClassCounts"][$severityClass]["RecallEvents"] += 1;

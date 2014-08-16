@@ -58,7 +58,9 @@ function ajax_caller(){
     // code to run if the request succeeds;
     // the response is passed to the function
     success: function( json ) {
+        $('#controls').show();
         $('#main-graph-container').show();
+        $('#wait-div').hide();
         pJson=json;
         begin_year = pJson["StartYear"];
         end_year = pJson["EndYear"];
@@ -120,8 +122,8 @@ function draw_radar_chart(begin_year_index, end_year_index){
     radar_chart = RadarChart.chart();
     radar_chart.config({w: radar_w, h:radar_h});
     radar_svg = d3.select("#radar_chart").append('svg')
-                        .attr("viewBox", ("0 " + "0 " + String(radar_w) + " " + String(radar_h)))
-                        .attr("preserveAspectRatio", "none");
+                        .attr("width", radar_w)
+                        .attr("height", radar_h);
 
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 
@@ -146,7 +148,7 @@ function calculate_percentages(begin_year, end_year){
     var percentage_array = [0, 0, 0, 0, 0, 0];
     var total_recalls = 0;
     for(year = begin_year; year <= end_year; ++year){
-        total_recalls += pJson.Data[year].ComputerClassRecalls + pJson.Data[year].NotComputerClassRecalls;
+        total_recalls += pJson.Data[year].ComputerClassRecalls;
         for(i =0 ; i < pJson.SpecialityLabels.length; ++i){
             speciality_label = pJson.SpecialityLabels[i];
             percentage_array[i] += pJson.Data[year].SpecialityCounts[speciality_label].RecallEvents;
@@ -281,7 +283,7 @@ function draw_recalls_line_chart(begin_year, end_year){
             {
                 data: orthopedic_stack,
                 color: color(2),
-                name: "Orthopedic"
+                name: "Anesthesiology"
             },
             {
                 data: general_hospital_stack,
@@ -296,7 +298,7 @@ function draw_recalls_line_chart(begin_year, end_year){
             {
                 data: plastic_surgery_stack,
                 color: color(5),
-                name: "General & Plastic Surgery"
+                name: "Hematology"
             }
 
         ],
@@ -319,19 +321,58 @@ function draw_recalls_line_chart(begin_year, end_year){
     
     
 }
-function redraw_piechart(dataset2){
+function redraw_piechart(dataset){
+    /*
     var paths = d3.selectAll("#speciality_piechart .arc path");
     paths.data(pie(dataset2))
          .attr("d", arc);
-    var text = d3.selectAll(".arc text");
-    text.data(pie(dataset2))
-        .attr("transform", function(d) {
-                return "translate(" + arc.centroid(d) + ")";})
-        .attr("text-anchor", "middle")
-        .classed('pi_label', true)
-        .html(function(d) {
-            return d.value + " %";
+    var text = d3.selectAll("#speciality_piechart .arc text");
+    text.remove();
+    var arcs = d3.selectAll("#speciality_piechart .arc");
+    arcs.append("text")
+    .attr("transform", function(d) {
+        return "translate(" + arc.centroid(d) + ")";
+    })
+    .attr("text-anchor", "middle")
+    .classed('pi_label', true)
+    .text(function(d) {
+        return d.value + " %";
+    });*/
+    d3.select("#speciality_piechart svg").remove();
+    var svg = d3.select("#speciality_piechart")
+            .append("svg")
+            .attr("width", pi_w)
+            .attr("height", pi_h);
+            /*
+            .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
+            .attr("preserveAspectRatio", "none");*/
+
+    //Set up groups
+    var arcs = svg.selectAll("g.arc")
+              .data(pie(dataset))
+              .enter()
+              .append("g")
+              .attr("class", "arc")
+              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+
+    //Draw arc paths
+    arcs.append("path")
+    .attr("fill", function(d, i) {
+        return color(i);
+    })
+    .attr("d", arc);
+
+    //Labels
+    arcs.append("text")
+    .attr("transform", function(d) {
+        return "translate(" + arc.centroid(d) + ")";
+    })
+    .attr("text-anchor", "middle")
+    .classed('pi_label', true)
+    .text(function(d) {
+        return d.value + " %";
     });
+
 }
 function draw_piechart(begin_year, end_year){
      var dataset = calculate_percentages(begin_year, end_year);
@@ -384,40 +425,11 @@ function init_radar_chart(begin_year, end_year){
     radar_chart = RadarChart.chart();
     radar_chart.config({w: radar_w, h:radar_h});
     var radar_svg = d3.select("#radar_chart").append('svg')
-    /*
-                        .attr("viewBox", ("0 " + "0 " + String(radar_w) + " " + String(radar_h)))
-                        .attr("preserveAspectRatio", preserveAspectRatio="xMinYMin meet");*/
                     .attr("width", radar_w)
                     .attr("height", radar_h);
     radar_svg.append('g').classed('single', 1).datum(data).call(radar_chart);
 }
-/*
-function draw_bubble_chart(begin_year, end_year){
-    var prev_boundary = 10;
-    var radius_data = calculate_bubble_data(begin_year, end_year);
-    var svg = d3.select("#bubble_chart")
-                .append("svg")
-                .attr("width", bubble_w)
-                .attr("height", bubble_h);
-    var circle = svg.selectAll("circle")
-                    .data(radius_data)
-                    .enter()
-                    .append("circle")
-                    .attr("cx", function(d, i){
-                        var x = prev_boundary + d/2;
-                        prev_boundary += d + 10;
-                        return x;
-                    })
-                    .attr("cy", (bubble_h/2))
-                    .attr("r", function(d, i){
-                        return d/2;
-                    })
-                    .attr("fill", function(d, i){
-                        return color(i);
-                    });
-    
-}
-*/
+
 function draw_bubbles_chart(begin_year_index, end_year_index){
 	var radii = calculate_bubble_radii(begin_year, end_year);
 		draw_bubble(begin_year, end_year, "510(k)", radii[0]);
@@ -475,10 +487,6 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
             .append("svg")
             .attr("width", (radius*2)+10)
             .attr("height", (circle_radius*2)+10);
-            /*
-            .attr("viewBox", ("0 " + "0 " + String(pi_w) + " " + String(pi_h)))
-            .attr("preserveAspectRatio", "none");*/
-
     //Set up groups
     var arcs = svg.selectAll("g.arc")
               .data(pie(data))
@@ -501,30 +509,8 @@ function draw_bubble(begin_year, end_year, bubble_class, radius){
 
     
 }
-
-//functions to resize the graph
-/*
-function resize_controller(){
-    bar_w = $('#class-bar-chart').width();
-    bar_h = bar_w - 50;
-    bar_graph.configure({
-        width: (bar_w),
-        height: (bar_h)
-    })
-    bar_graph.render();
-    line_w = $("#total-recalls-chart").width();
-    line_h = line_w - 50; 
-    recalls_chart.configure({
-        width: (bar_w),
-        height: (bar_h)
-    })
-    recalls_chart.render();
-    
-}
-*/
-//window.addEventListener('resize', resize_controller); 
 $("#main-graph-container").hide();
-$("#about").hide();
+$("#controls").hide();
 //make the main ajax call
 $( function(){
     ajax_caller();
