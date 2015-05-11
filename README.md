@@ -2,6 +2,7 @@ MedSafe Infographics
 ====================
 
 ###Visualization of the statistics derived by MedSafe on FDA Recalls
+*
 	
 Demo at http://web.engr.illinois.edu/~msaxena2/project
 
